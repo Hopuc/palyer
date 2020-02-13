@@ -1,4 +1,4 @@
-/* 2020-02-03 */
+/* 2020-02-11 */
 
 button[data-balloon] {
 	overflow: visible
@@ -1660,7 +1660,7 @@ button[data-balloon] {
 	transform: scale(0);
 	width: 110px;
 	border-radius: 2px;
-	background: rgba(128, 128, 128, .5);
+	background: rgba(128, 128, 128, .6);
 	box-shadow: 0px 0px 5px rgba(255, 255, 255, .1);
 	//padding: 7px 0;
 	transition: all .3s ease-in-out;
@@ -1849,7 +1849,7 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-pip {
-	display: inline-block;
+	display: none;
 	height: 100%
 }
 
@@ -2037,7 +2037,7 @@ button[data-balloon] {
 	position: absolute;
 	width: 160px;
 	border-radius: 2px;
-	background: rgba(100, 100, 100, .5);
+	background: rgba(100, 100, 100, .6);
 	padding: 0;
 	overflow: hidden;
 	z-index: 3;
@@ -2194,4 +2194,3 @@ span,p {
 	font-family: "Microsoft YaHei", "微软雅黑", "Arial", "SimHei", "黑体", sans-serif;
 }
 
-/*# sourceMappingURL=player.css.map*/

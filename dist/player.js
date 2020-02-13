@@ -1,4 +1,4 @@
-/* 2020-02-03 */
+/* 2020-02-11 */
 
 ! function(e, t) {
 	"object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define
@@ -603,7 +603,8 @@
 			}, {
 				key: "update",
 				value: function() {
-					this.template.infoVersion.innerHTML = "Hopuc v1.25.0-200203", this.template.infoType.innerHTML = this.player.type,
+					this.template.infoVersion.innerHTML = "Hopuc v1.25.0-20200210", this.template.infoType.innerHTML = this.player
+						.type,
 						this.template.infoUrl.innerHTML = this.player.options.video.url, this.template.infoResolution.innerHTML =
 						this.player.video.videoWidth + " x " + this.player.video.videoHeight, this.template.infoDuration.innerHTML =
 						this.player.video.duration, this.player.options.danmaku && (this.template.infoDanmakuId.innerHTML = this
@@ -1153,7 +1154,8 @@
 						t.toBlob(function(e) {
 							n = URL.createObjectURL(e);
 							var t = document.createElement("a");
-							t.href = n, t.download = "HopucPlayer.png", t.style.display = "none", document.body.appendChild(t), t.click(),
+							t.href = n, t.download = "HopucPlayer.png", t.style.display = "none", document.body.appendChild(t),
+								t.click(),
 								document.body.removeChild(t), URL.revokeObjectURL(n)
 						}), e.player.events.trigger("screenshot", n)
 					})
@@ -3354,35 +3356,42 @@
 			o = (i = a) && i.__esModule ? i : {
 				default: i
 			};
-		console.log("%c HopucPlayer v1.25.0-200203 %c https://hopuc.com","color: #77c; background: #ddd; padding:5px 0;","background: #77c; padding:5px 0;"), t.default = o.default
+		console.log("%c HopucPlayer v1.25.0-20200210 %c https://hopuc.com",
+			"color: #77c; background: #ddd; padding:5px 0;border-radius:3px", "color: #77c;"), t.default = o.default
 	}]).default
 });
 
+var isMobile = /mobile/i.test(window.navigator.userAgent);
 window.onload = function() {
-	const btn = document.querySelector('#pip-btn');
-	const video = document.querySelector('#video');
-	const svg = document.querySelector('#pip-svg');
-	btn.addEventListener('click', function(event) {
-		console.log('切换画中画模式');
-		// 禁用按钮，防止二次点击
-		this.disabled = true;
-		try {
-			if (video !== document.pictureInPictureElement) {
-				// 尝试进入画中画模式
-				video.requestPictureInPicture();
-				svg.innerHTML =
-					'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
-			} else {
-				// 退出画中画
-				document.exitPictureInPicture();
-				svg.innerHTML =
-					'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
+	if (!isMobile) {
+		const btn = document.querySelector('#pip-btn');
+		const video = document.querySelector('#video');
+		const svg = document.querySelector('#pip-svg');
+		const pip = document.querySelector('.dplayer-pip');
+		pip.style.display = 'inline-block';
+		btn.addEventListener('click', function(event) {
+			//console.log('切换画中画模式');
+			// 禁用按钮，防止二次点击
+			this.disabled = true;
+			try {
+				if (video !== document.pictureInPictureElement) {
+					// 尝试进入画中画模式
+					video.requestPictureInPicture();
+					svg.innerHTML =
+						'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
+				} else {
+					// 退出画中画
+					document.exitPictureInPicture();
+					svg.innerHTML =
+						'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
+				}
+			} catch (error) {
+				console.log('PictureInPicture:' + error);
+			} finally {
+				this.disabled = false;
 			}
-		} catch (error) {
-			console.log('画中画错误：' + error);
-		} finally {
-			this.disabled = false;
-		}
-	});
+		});
+	}
 }
-//# sourceMappingURL=player.js.map
+
+//# sourceMappingURL=player.min.js.map
