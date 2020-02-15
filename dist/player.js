@@ -603,7 +603,7 @@
 			}, {
 				key: "update",
 				value: function() {
-					this.template.infoVersion.innerHTML = "Hopuc v1.25.0-20200210", this.template.infoType.innerHTML = this.player
+					this.template.infoVersion.innerHTML = "Hopuc v1.0.1-20200213", this.template.infoType.innerHTML = this.player
 						.type,
 						this.template.infoUrl.innerHTML = this.player.options.video.url, this.template.infoResolution.innerHTML =
 						this.player.video.videoWidth + " x " + this.player.video.videoHeight, this.template.infoDuration.innerHTML =
@@ -2062,7 +2062,7 @@
 					a += s(l("Hide subtitle")), a +=
 					'" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a += c.subtitle, a +=
 					"</span>\n            </button>\n        </div>\n        "), a +=
-				'\n     <div class="dplayer-pip">    <button id="pip-btn" class="dplayer-icon dplayer-pip-icon" data-balloon="画中画" data-balloon-pos="up">    <span id="pip-svg" class="dplayer-icon-content"><svg t="1580656357666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9888" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="9889" fill="#eee"></path></svg></span>    </button>    </div>  \n  <div class="dplayer-setting">\n            <button class="dplayer-icon dplayer-setting-icon" data-balloon="',
+				'\n     <div class="dplayer-pip">    <button id="pip-btn" class="dplayer-icon dplayer-pip-icon" data-balloon="画中画" data-balloon-pos="up" onclick="pip()">    <span id="pip-svg" class="dplayer-icon-content"><svg t="1580656357666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9888" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="9889" fill="#eee"></path></svg></span>    </button>    </div>  \n  <div class="dplayer-setting">\n            <button class="dplayer-icon dplayer-setting-icon" data-balloon="',
 				a += s(l("Setting")), a += '" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a +=
 				c.setting, a +=
 				'</span>\n            </button>\n            <div class="dplayer-setting-box">\n                <div class="dplayer-setting-origin-panel">\n                    <div class="dplayer-setting-item dplayer-setting-speed">\n                        <span class="dplayer-label">',
@@ -3342,7 +3342,7 @@
 				}], [{
 					key: "version",
 					get: function() {
-						return "1.25.0"
+						return "1.0.1"
 					}
 				}]), e
 			}();
@@ -3356,42 +3356,36 @@
 			o = (i = a) && i.__esModule ? i : {
 				default: i
 			};
-		console.log("%c HopucPlayer v1.25.0-20200210 %c https://hopuc.com",
+		console.log("%c HopucPlayer v1.0.1-20200213 %c https://hopuc.com",
 			"color: #77c; background: #ddd; padding:5px 0;border-radius:3px", "color: #77c;"), t.default = o.default
 	}]).default
 });
 
-var isMobile = /mobile/i.test(window.navigator.userAgent);
-window.onload = function() {
-	if (!isMobile) {
-		const btn = document.querySelector('#pip-btn');
-		const video = document.querySelector('#video');
-		const svg = document.querySelector('#pip-svg');
-		const pip = document.querySelector('.dplayer-pip');
-		pip.style.display = 'inline-block';
-		btn.addEventListener('click', function(event) {
-			//console.log('切换画中画模式');
-			// 禁用按钮，防止二次点击
-			this.disabled = true;
-			try {
-				if (video !== document.pictureInPictureElement) {
-					// 尝试进入画中画模式
-					video.requestPictureInPicture();
-					svg.innerHTML =
-						'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
-				} else {
-					// 退出画中画
-					document.exitPictureInPicture();
-					svg.innerHTML =
-						'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
-				}
-			} catch (error) {
-				console.log('PictureInPicture:' + error);
-			} finally {
-				this.disabled = false;
+function pip() {
+	var btn = document.getElementById('pip-btn');
+	var video = document.getElementById('video');
+	var svg = document.getElementById('pip-svg');
+	//var pip = document.getElementsByClassName('dplayer-pip');
+		//console.log('切换画中画模式');
+		// 禁用按钮，防止二次点击
+		this.disabled = true;
+		try {
+			if (video !== document.pictureInPictureElement) {
+				// 尝试进入画中画模式
+				video.requestPictureInPicture();
+				svg.innerHTML =
+					'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
+			} else {
+				// 退出画中画
+				document.exitPictureInPicture();
+				svg.innerHTML =
+					'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
 			}
-		});
-	}
+		} catch (error) {
+			console.log('PictureInPicture:' + error);
+		} finally {
+			this.disabled = false;
+		}
 }
 
 //# sourceMappingURL=player.min.js.map

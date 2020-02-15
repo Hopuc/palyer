@@ -961,6 +961,10 @@ button[data-balloon] {
 	display: none
 }
 
+.dplayer.dplayer-mobile .dplayer-controller .dplayer-icons .dplayer-pip {
+	display: none
+}
+
 .dplayer.dplayer-mobile .dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon {
 	position: static;
 	display: inline-block
@@ -1849,7 +1853,7 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-pip {
-	display: none;
+	display: inline-block;
 	height: 100%
 }
 
