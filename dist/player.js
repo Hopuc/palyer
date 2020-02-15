@@ -601,7 +601,7 @@
 			}, {
 				key: "update",
 				value: function() {
-					this.template.infoVersion.innerHTML = "Hopuc v1.0.2-20200215", this.template.infoType.innerHTML = this.player
+					this.template.infoVersion.innerHTML = "Hopuc v1.0.3-20200215", this.template.infoType.innerHTML = this.player
 						.type,
 						this.template.infoUrl.innerHTML = this.player.options.video.url, this.template.infoResolution.innerHTML =
 						this.player.video.videoWidth + " x " + this.player.video.videoHeight, this.template.infoDuration.innerHTML =
@@ -3340,7 +3340,7 @@
 				}], [{
 					key: "version",
 					get: function() {
-						return "1.0.1"
+						return "1.0.3"
 					}
 				}]), e
 			}();
@@ -3354,7 +3354,7 @@
 			o = (i = a) && i.__esModule ? i : {
 				default: i
 			};
-		console.log("%c HopucPlayer v1.0.2-20200215 %c https://hopuc.com",
+		console.log("%c HopucPlayer v1.0.3-20200215 %c https://hopuc.com",
 			"color: #77c; background: #ddd; padding:5px 0;border-radius:3px", "color: #77c;"), t.default = o.default
 	}]).default
 });
