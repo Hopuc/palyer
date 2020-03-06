@@ -15,9 +15,9 @@ button[data-balloon] {
 	font-style: normal !important;
 	text-shadow: none !important;
 	font-size: 12px !important;
-	background: rgba(0, 0, 0, .9);
-	border-radius: 4px;
-	color: #fff;
+	background: rgba(250,250,250,.8);
+	border-radius: 3px;
+	color: #555;
 	content: attr(data-balloon);
 	//padding: .5em 1em;
 	white-space: nowrap
@@ -76,7 +76,7 @@ button[data-balloon] {
 [data-balloon][data-balloon-pos=up]:after,
 [data-balloon][data-balloon-pos=up]:before {
 	bottom: 120%;
-	//left: 50%;
+	left: 50%;
 	-webkit-transform: translate(-50%, 10px);
 	transform: translate(-50%, 10px);
 	-webkit-transform-origin: top;
@@ -851,6 +851,15 @@ button[data-balloon] {
 	fill: #fff
 }
 
+.dplayer .dplayer-toggle svg {
+	width: 90%;
+	height: 90%;
+}
+
+.dplayer .dplayer-toggle svg path {
+	fill: #555
+}
+
 .dplayer:-webkit-full-screen {
 	width: 100%;
 	height: 100%;
@@ -942,6 +951,12 @@ button[data-balloon] {
 	transform: translateY(100%)
 }
 
+.dplayer.dplayer-hide-controller .dplayer-video-wrap .dplayer-title {
+	opacity: 0;
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%)
+}
+
 .dplayer.dplayer-show-controller .dplayer-controller,
 .dplayer.dplayer-show-controller .dplayer-controller-mask {
 	opacity: 1
@@ -988,7 +1003,7 @@ button[data-balloon] {
 
 [data-balloon]:after {
 	padding: 4px 8px;
-	background: rgba(0,0,0,.8)
+	background: rgba(250,250,250,.8);
 }
 
 [data-balloon][data-balloon-pos=up]:after {
@@ -1022,8 +1037,8 @@ button[data-balloon] {
 }
 
 .dplayer-bezel .dplayer-bezel-icon.dplayer-bezel-transition {
-	-webkit-animation: bezel-hide .5s linear;
-	animation: bezel-hide .5s linear
+	-webkit-animation: bezel-hide .6s linear;
+	animation: bezel-hide .6s linear
 }
 
 @-webkit-keyframes bezel-hide {
@@ -1071,9 +1086,9 @@ button[data-balloon] {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -18px 0 0 -18px;
-	height: 36px;
-	width: 36px;
+	margin: -22px 0 0 -22px;
+	height: 44px;
+	width: 44px;
 	pointer-events: none
 }
 
@@ -1277,7 +1292,7 @@ button[data-balloon] {
 .dplayer-controller .dplayer-bar-wrap .dplayer-bar-time {
 	position: absolute;
 	left: 0;
-	top: -20px;
+	top: -24px;
 	border-radius: 4px;
 	padding: 5px 7px;
 	background-color: rgba(0, 0, 0, .62);
@@ -1336,6 +1351,10 @@ button[data-balloon] {
 	transition: all .3s ease-in-out;
 	-webkit-transform: scale(0);
 	transform: scale(0)
+}
+
+.dplayer-controller .dplayer-bar-wrap .dplayer-bar .dplayer-played .dplayer-thumb:hover {
+	box-shadow: 0 0 0 3px rgba(255,255,255,.3);
 }
 
 .dplayer-controller .dplayer-icons {
@@ -1582,18 +1601,20 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon {
-	width: 43px
+	width: 40px
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume {
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
+	width: 40px;
 	height: 100%
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume:hover .dplayer-volume-bar-wrap .dplayer-volume-bar {
-	width: 45px
+	//width: 45px;
+	height: 45px;
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume:hover .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner .dplayer-thumb {
@@ -1602,7 +1623,8 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume.dplayer-volume-active .dplayer-volume-bar-wrap .dplayer-volume-bar {
-	width: 45px
+	//width: 45px;
+	height: 45px;
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume.dplayer-volume-active .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner .dplayer-thumb {
@@ -1612,42 +1634,63 @@ button[data-balloon] {
 
 .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap {
 	display: inline-block;
-	margin: 0 10px 0 -5px;
+	margin: 0;
+	padding: 2px 18px;
 	vertical-align: middle;
-	height: 100%
+	//height: 100%;
+	//width: 100%;
+	position: absolute;
+	//top: -60px;
+	bottom: 50px;
+	left: 0;
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar {
 	position: relative;
-	top: 17px;
-	width: 0;
-	height: 3px;
+	top: 0px;
+	//width: 0;
+	//height: 3px;
+	width: 4px;
+	height: 0;
+	border-radius: 2px;
 	background: #aaa;
-	transition: all .3s ease-in-out
+	transition: all .5s ease-in-out
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	height: 100%;
+	//height: 100%;
+	width: 100%;
 	transition: all .1s ease;
-	will-change: width
+	border-radius: 2px;
+	//will-change: width;
+	will-change: height;
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner .dplayer-thumb {
 	position: absolute;
 	top: 0;
-	right: 5px;
+	//right: 5px;
+	right: -3px;
 	margin-top: -4px;
-	margin-right: -10px;
-	height: 11px;
-	width: 11px;
+	//margin-right: 0;
+	height: 10px;
+	width: 10px;
 	border-radius: 50%;
 	cursor: pointer;
 	transition: all .3s ease-in-out;
 	-webkit-transform: scale(0);
 	transform: scale(0)
+}
+
+.dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner .dplayer-thumb:hover{
+	box-shadow: 0 0 0 3px rgba(255,255,255,.3);
+}
+
+.dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap::after{
+	left: 50%;
 }
 
 .dplayer-controller .dplayer-icons .dplayer-setting,
@@ -1664,8 +1707,8 @@ button[data-balloon] {
 	transform: scale(0);
 	width: 110px;
 	border-radius: 2px;
-	background: rgba(128, 128, 128, .6);
-	box-shadow: 0px 0px 5px rgba(255, 255, 255, .1);
+	background: rgba(250,250,250,.9);
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
 	//padding: 7px 0;
 	transition: all .3s ease-in-out;
 	overflow: hidden;
@@ -1802,6 +1845,10 @@ button[data-balloon] {
 	display: inline-block;
 }
 
+.dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon::after{
+	left: 25%;
+}
+
 .dplayer-controller .dplayer-icons .dplayer-quality {
 	position: relative;
 	display: inline-block;
@@ -1858,7 +1905,7 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-label {
-	color: #eee;
+	color: #555;
 	font-size: 14px;
 	height: 14px;
 	line-height: 14px;
@@ -1868,13 +1915,13 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-toggle {
-	width: 32px;
-	height: 20px;
+	width: 30px;
+	height: 18px;
 	text-align: center;
 	font-size: 0;
 	vertical-align: middle;
 	position: absolute;
-	top: 5px;
+	top: 7px;
 	right: 10px
 }
 
@@ -1887,10 +1934,10 @@ button[data-balloon] {
 .dplayer-controller .dplayer-icons .dplayer-toggle input+label {
 	display: inline-block;
 	position: relative;
-	box-shadow: inset 0 0 0 0 #dfdfdf;
-	border: 1px solid #dfdfdf;
-	height: 20px;
-	width: 32px;
+	box-shadow: inset 0 0 0 0 #555;
+	border: 1px solid #555;
+	height: 18px;
+	width: 30px;
 	border-radius: 10px;
 	box-sizing: border-box;
 	cursor: pointer;
@@ -1902,8 +1949,8 @@ button[data-balloon] {
 	content: "";
 	position: absolute;
 	display: block;
-	height: 18px;
-	width: 18px;
+	height: 16px;
+	width: 16px;
 	top: 0;
 	left: 0;
 	border-radius: 15px;
@@ -1912,16 +1959,17 @@ button[data-balloon] {
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input+label:after {
 	background: #fff;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, .4)
+	box-shadow: 0 0 3px rgba(0, 0, 0, .2)
 }
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label {
-	border-color: hsla(0, 0%, 100%, .5)
+	border-color: rgba(50,50,50,.8)
 }
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label:before {
-	width: 30px;
-	background: hsla(0, 0%, 100%, .5)
+	width: 28px;
+	background: rgba(50,50,50,.8);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, .8);	
 }
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label:after {
@@ -2026,22 +2074,44 @@ button[data-balloon] {
 	position: absolute;
 	//left: 20px;
 	right: 28px;
-	top: 20px;
-	max-width: 50px;
-	max-height: 50px
+	top: 16px;
+	max-width: 30px;
+	max-height: 30px
 }
 
 .dplayer-logo img {
+	width: 3vmax;
+	min-width: 20px;
+	min-height: 20px;
 	max-width: 100%;
 	max-height: 100%;
 	background: none
+}
+
+.dplayer-title {
+	pointer-events: none;
+	position: absolute;
+	left: 20px;
+	top: 16px;
+	max-width: 80%;
+	width: 70%;
+	//height: 30px;
+	transition: ease-in-out .3s; 
+}
+
+.dplayer-title span{
+	color: rgba(255,255,255,.8);
+	font-size: 18px;
+	height: 24px; 
+	line-height: 24px;
+	font-weight: 400 !important;
 }
 
 .dplayer-menu {
 	position: absolute;
 	width: 160px;
 	border-radius: 2px;
-	background: rgba(100, 100, 100, .6);
+	background: rgba(250,250,250,.8);
 	padding: 0;
 	overflow: hidden;
 	z-index: 3;
@@ -2065,7 +2135,7 @@ button[data-balloon] {
 .dplayer-menu .dplayer-menu-item a {
 	padding: 0 10px;
 	line-height: 30px;
-	color: #eee;
+	color: #555;
 	font-size: 14px;
 	font-weight: 700;
 	display: inline-block;
@@ -2092,11 +2162,12 @@ button[data-balloon] {
 	font-size: 14px;
 	font-weight: 700;
 	border-radius: 2px;
-	background: rgba(128, 128, 128, .5);
+	background: rgba(250,250,250,.9);
+	box-shadow: 0 0 5px rgba(0,0,0,.1);
 	padding: 7px 20px;
 	transition: all .3s ease-in-out;
 	overflow: hidden;
-	color: #fff;
+	color: #555;
 	pointer-events: none
 }
 
@@ -2131,7 +2202,7 @@ button[data-balloon] {
 
 .dplayer-video-wrap {
 	position: relative;
-	background: rgba(0,0,0,0);
+	background: rgba(0,0,0,.8);
 	font-size: 0;
 	width: 100%;
 	height: 100%
@@ -2156,9 +2227,11 @@ button[data-balloon] {
 	top: 10px;
 	left: 10px;
 	width: 400px;
-	background: rgba(128, 128, 128, .4);
+	max-width: 90%;
+	background: rgba(250,250,250,.8);
+	box-shadow: 0 0 5px rgba(0,0,0,.1);
 	padding: 10px;
-	color: #fff;
+	color: #555;
 	font-size: 12px;
 	border-radius: 2px
 }
@@ -2193,7 +2266,7 @@ button[data-balloon] {
 	width: 260px
 }
 
-span,p {
+#dplayer span,#dplayer p {
 	font-weight: 700;
 	font-family: "Microsoft YaHei", "微软雅黑", "Arial", "SimHei", "黑体", sans-serif;
 }

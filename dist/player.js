@@ -178,6 +178,20 @@
 					}
 					return this.getElementViewLeft(e)
 				},
+				getBoundingClientRectViewTop: function(e) {
+					var t = document.documentElement.scrollTop;
+					if (e.getBoundingClientRect) {
+						if ("number" != typeof this.getBoundingClientRectViewTop.offset) {
+							var n = document.createElement("div");
+							n.style.cssText = "position:absolute;top:0;left:0;", document.body.appendChild(n), this.getBoundingClientRectViewTop
+								.offset = -n.getBoundingClientRect().top - t, document.body.removeChild(n), n = null
+						}
+						var i = e.getBoundingClientRect(),
+							a = this.getBoundingClientRectViewTop.offset;
+						return i.top + a
+					}
+					return this.getElementViewTop(e)
+				},
 				getScrollPosition: function() {
 					return {
 						left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
@@ -362,10 +376,10 @@
 				u = e.url;
 			n = a && "webvtt" === a.type;
 			return t += '\n<video\n  id="video"  class="dplayer-video ', o && (t += "dplayer-video-current"), t +=
-				'"\n    webkit-playsinline\n    playsinline\n    ', r && (t += 'poster="', t += s(r), t += '"'), t += "\n    ",
-				(l || n) && (t += 'crossorigin="anonymous"'), t += "\n    ", c && (t += 'preload="', t += s(c), t += '"'), t +=
-				"\n    ", u && (t += 'src="', t += s(u), t += '"'), t += "\n    >\n    ", n && (t +=
-					'\n    <track kind="metadata" default src="', t += s(a.url), t += '"></track>\n    '), t += "\n</video>"
+				'"\nwebkit-playsinline\nplaysinline\n', r && (t += 'poster="', t += s(r), t += '"'), t += "\n",
+				(l || n) && (t += 'crossorigin="anonymous"'), t += "\n", c && (t += 'preload="', t += s(c), t += '"'), t +=
+				"\n", u && (t += 'src="', t += s(u), t += '"'), t += "\n>\n", n && (t +=
+					'\n<track kind="metadata" default src="', t += s(a.url), t += '"></track>\n'), t += "\n</video>"
 		}
 	}, function(e, t, n) {
 		"use strict";
@@ -601,7 +615,7 @@
 			}, {
 				key: "update",
 				value: function() {
-					this.template.infoVersion.innerHTML = "Hopuc v1.0.3-20200215", this.template.infoType.innerHTML = this.player
+					this.template.infoVersion.innerHTML = "Hopuc Player v1.0.4-20200217", this.template.infoType.innerHTML = this.player
 						.type,
 						this.template.infoUrl.innerHTML = this.player.options.video.url, this.template.infoResolution.innerHTML =
 						this.player.video.videoWidth + " x " + this.player.video.videoHeight, this.template.infoDuration.innerHTML =
@@ -844,7 +858,7 @@
 					}), this.loop = this.player.options.loop, this.player.template.loopToggle.checked = this.loop, this.player.template
 					.loop.addEventListener("click", function() {
 						n.player.template.loopToggle.checked = !n.player.template.loopToggle.checked, n.player.template.loopToggle.checked ?
-							n.loop = !0 : n.loop = !1, n.hide()
+							n.loop = !0 : n.loop = !1, n.player.template.loopToggle.checked ? n.player.notice("开启循环") : n.player.notice("关闭循环"), n.hide()
 					}), this.showDanmaku = this.player.user.get("danmaku"), this.showDanmaku || this.player.danmaku && this.player
 					.danmaku.hide(), this.player.template.showDanmakuToggle.checked = this.showDanmaku, this.player.template.showDanmaku
 					.addEventListener("click", function() {
@@ -862,7 +876,7 @@
 					});
 				for (var i = function(e) {
 						n.player.template.speedItem[e].addEventListener("click", function() {
-							n.player.speed(n.player.template.speedItem[e].dataset.speed), n.hide()
+							n.player.speed(n.player.template.speedItem[e].dataset.speed), n.player.notice(n.player.template.speedItem[e].dataset.speed+"倍速"), n.hide()
 						})
 					}, a = 0; a < this.player.template.speedItem.length; a++) i(a);
 				if (this.player.danmaku) {
@@ -1109,8 +1123,8 @@
 					var e = this,
 						t = function(t) {
 							var n = t || window.event,
-								i = ((n.clientX || n.changedTouches[0].clientX) - a.default.getBoundingClientRectViewLeft(e.player.template
-									.volumeBarWrap) - 5.5) / 35;
+								i = ((-n.clientY || -n.changedTouches[0].clientY) + a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap) /* + 5.5 */+40 ) / 35;
+								console.log(a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap));
 							e.player.volume(i)
 						},
 						n = function n() {
@@ -1119,16 +1133,14 @@
 						};
 					this.player.template.volumeBarWrapWrap.addEventListener("click", function(t) {
 						var n = t || window.event,
-							i = ((n.clientX || n.changedTouches[0].clientX) - a.default.getBoundingClientRectViewLeft(e.player.template
-								.volumeBarWrap) - 5.5) / 35;
+							i = ((-n.clientY || -n.changedTouches[0].clientY) + a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap) /* + 5.5 */+40 ) / 35;
+							console.log(a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap));
 						e.player.volume(i)
 					}), this.player.template.volumeBarWrapWrap.addEventListener(a.default.nameMap.dragStart, function() {
 						document.addEventListener(a.default.nameMap.dragMove, t), document.addEventListener(a.default.nameMap.dragEnd,
 							n), e.player.template.volumeButton.classList.add("dplayer-volume-active")
 					}), this.player.template.volumeButtonIcon.addEventListener("click", function() {
-						e.player.video.muted ? (e.player.video.muted = !1, e.player.switchVolumeIcon(), e.player.bar.set(
-							"volume", e.player.volume(), "width")) : (e.player.video.muted = !0, e.player.template.volumeIcon.innerHTML =
-							r.default.volumeOff, e.player.bar.set("volume", 0, "width"))
+						e.player.video.muted ? (e.player.video.muted = !1, e.player.switchVolumeIcon(), e.player.bar.set("volume", e.player.volume()||0.7, "height"),e.player.notice("取消静音")) : (e.player.video.muted = !0, e.player.template.volumeIcon.innerHTML = r.default.volumeOff, e.player.bar.set("volume", 0, "height"),e.player.notice("静音"))
 					})
 				}
 			}, {
@@ -1152,7 +1164,7 @@
 						t.toBlob(function(e) {
 							n = URL.createObjectURL(e);
 							var t = document.createElement("a");
-							t.href = n, t.download = "HopucPlayer.png", t.style.display = "none", document.body.appendChild(t),
+							t.href = n, t.download = "Hopuc.png", t.style.display = "none", document.body.appendChild(t),
 								t.click(),
 								document.body.removeChild(t), URL.revokeObjectURL(n)
 						}), e.player.events.trigger("screenshot", n)
@@ -1612,16 +1624,7 @@
 			function e() {
 				! function(e, t) {
 					if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function")
-				}(this, e), this.events = {}, this.videoEvents = ["abort", "canplay", "canplaythrough", "durationchange",
-					"emptied", "ended", "error", "loadeddata", "loadedmetadata", "loadstart", "mozaudioavailable", "pause",
-					"play", "playing", "progress", "ratechange", "seeked", "seeking", "stalled", "suspend", "timeupdate",
-					"volumechange", "waiting"
-				], this.playerEvents = ["screenshot", "thumbnails_show", "thumbnails_hide", "danmaku_show", "danmaku_hide",
-					"danmaku_clear", "danmaku_loaded", "danmaku_send", "danmaku_opacity", "contextmenu_show", "contextmenu_hide",
-					"notice_show", "notice_hide", "quality_start", "quality_end", "destroy", "resize", "fullscreen",
-					"fullscreen_cancel", "webfullscreen", "webfullscreen_cancel", "subtitle_show", "subtitle_hide",
-					"subtitle_change"
-				]
+				}(this, e), this.events = {}, this.videoEvents = ["abort", "canplay", "canplaythrough", "durationchange","emptied", "ended", "error", "loadeddata", "loadedmetadata", "loadstart", "mozaudioavailable", "pause","play", "playing", "progress", "ratechange", "seeked", "seeking", "stalled", "suspend", "timeupdate","volumechange", "waiting"], this.playerEvents = ["screenshot", "thumbnails_show", "thumbnails_hide", "danmaku_show", "danmaku_hide","danmaku_clear", "danmaku_loaded", "danmaku_send", "danmaku_opacity", "contextmenu_show", "contextmenu_hide","notice_show", "notice_hide", "quality_start", "quality_end", "destroy", "resize", "fullscreen","fullscreen_cancel", "webfullscreen", "webfullscreen_cancel", "subtitle_show", "subtitle_hide","subtitle_change"]
 			}
 			return i(e, [{
 				key: "on",
@@ -1889,14 +1892,12 @@
 						right: {},
 						top: {},
 						bottom: {}
-					}, this.danIndex = 0, this.options.container.innerHTML = "", this.events && this.events.trigger(
-						"danmaku_clear")
+					}, this.danIndex = 0, this.options.container.innerHTML = "", this.events && this.events.trigger("danmaku_clear")
 				}
 			}, {
 				key: "htmlEncode",
 				value: function(e) {
-					return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(
-						/'/g, "&#x27;").replace(/\//g, "&#x2f;")
+					return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/\//g, "&#x2f;")
 				}
 			}, {
 				key: "resize",
@@ -1994,118 +1995,115 @@
 				u = e.index,
 				d = i.$each;
 			e.$value, e.$index;
-			return a += '<div class="dplayer-mask"></div>\n<div class="dplayer-video-wrap">\n    ', t = n(5)(o), a += t, a +=
-				"\n    ", r.logo && (a += '\n    <div class="dplayer-logo">\n        <img src="', a += s(r.logo), a +=
-					'">\n    </div>\n    '), a += '\n    <div class="dplayer-danmaku"', r.danmaku && r.danmaku.bottm && (a +=
+			return a += '<div class="dplayer-mask"></div>\n<div class="dplayer-video-wrap">\n', t = n(5)(o), a += t, a +=
+				"\n", r.logo && (a += '\n<div class="dplayer-logo">\n<img src="', a += s(r.logo), a +=
+					'">\n</div>\n<div class="dplayer-title"><span>', a += s(r.title), a +=
+					'</span></div>\n'), a += '\n<div class="dplayer-danmaku"', r.danmaku && r.danmaku.bottm && (a +=
 					' style="margin-bottom:', a += s(r.danmaku.bottm), a += '"'), a +=
-				'>\n        <div class="dplayer-danmaku-item dplayer-danmaku-item--demo"></div>\n    </div>\n    <div class="dplayer-subtitle"></div>\n    <div class="dplayer-bezel">\n        <span class="dplayer-bezel-icon"></span>\n        ',
-				r.danmaku && (a += '\n        <span class="dplayer-danloading">', a += s(l("Danmaku is loading")), a +=
-					"</span>\n        "), a += '\n        <span class="diplayer-loading-icon">', a += c.loading, a +=
-				'</span>\n    </div>\n</div>\n<div class="dplayer-controller-mask"></div>\n<div class="dplayer-controller">\n    <div class="dplayer-icons dplayer-comment-box">\n        <button class="dplayer-icon dplayer-comment-setting-icon" data-balloon="',
-				a += s(l("Setting")), a += '" data-balloon-pos="up">\n            <span class="dplayer-icon-content">', a += c
+				'>\n<div class="dplayer-danmaku-item dplayer-danmaku-item--demo"></div>\n</div>\n<div class="dplayer-subtitle"></div>\n<div class="dplayer-bezel">\n<span class="dplayer-bezel-icon"></span>\n',
+				r.danmaku && (a += '\n<span class="dplayer-danloading">', a += s(l("Danmaku is loading")), a +=
+					"</span>\n"), a += '\n<span class="diplayer-loading-icon">', a += c.loading, a +=
+				'</span>\n</div>\n</div>\n<div class="dplayer-controller-mask"></div>\n<div class="dplayer-controller">\n<div class="dplayer-icons dplayer-comment-box">\n<button class="dplayer-icon dplayer-comment-setting-icon" data-balloon="',
+				a += s(l("Setting")), a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c
 				.pallette, a +=
-				'</span>\n        </button>\n        <div class="dplayer-comment-setting-box">\n            <div class="dplayer-comment-setting-color">\n                <div class="dplayer-comment-setting-title">',
+				'</span>\n</button>\n<div class="dplayer-comment-setting-box">\n<div class="dplayer-comment-setting-color">\n<div class="dplayer-comment-setting-title">',
 				a += s(l("Set danmaku color")), a +=
-				'</div>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-color-', a +=
+				'</div>\n<label>\n<input type="radio" name="dplayer-danmaku-color-', a +=
 				s(u), a +=
-				'" value="#fff" checked>\n                    <span style="background: #fff;"></span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-color-',
+				'" value="#fff" checked>\n<span style="background: #fff;"></span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-color-',
 				a += s(u), a +=
-				'" value="#e54256">\n                    <span style="background: #e54256"></span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-color-',
+				'" value="#e54256">\n<span style="background: #e54256"></span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-color-',
 				a += s(u), a +=
-				'" value="#ffe133">\n                    <span style="background: #ffe133"></span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-color-',
+				'" value="#ffe133">\n<span style="background: #ffe133"></span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-color-',
 				a += s(u), a +=
-				'" value="#64DD17">\n                    <span style="background: #64DD17"></span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-color-',
+				'" value="#64DD17">\n<span style="background: #64DD17"></span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-color-',
 				a += s(u), a +=
-				'" value="#39ccff">\n                    <span style="background: #39ccff"></span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-color-',
+				'" value="#39ccff">\n<span style="background: #39ccff"></span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-color-',
 				a += s(u), a +=
-				'" value="#D500F9">\n                    <span style="background: #D500F9"></span>\n                </label>\n            </div>\n            <div class="dplayer-comment-setting-type">\n                <div class="dplayer-comment-setting-title">',
+				'" value="#D500F9">\n<span style="background: #D500F9"></span>\n</label>\n</div>\n<div class="dplayer-comment-setting-type">\n<div class="dplayer-comment-setting-title">',
 				a += s(l("Set danmaku type")), a +=
-				'</div>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-type-', a += s(
-					u), a += '" value="1">\n                    <span>', a += s(l("Top")), a +=
-				'</span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-type-',
-				a += s(u), a += '" value="0" checked>\n                    <span>', a += s(l("Rolling")), a +=
-				'</span>\n                </label>\n                <label>\n                    <input type="radio" name="dplayer-danmaku-type-',
-				a += s(u), a += '" value="2">\n                    <span>', a += s(l("Bottom")), a +=
-				'</span>\n                </label>\n            </div>\n        </div>\n        <input class="dplayer-comment-input" type="text" placeholder="',
+				'</div>\n<label>\n<input type="radio" name="dplayer-danmaku-type-', a += s(
+					u), a += '" value="1">\n<span>', a += s(l("Top")), a +=
+				'</span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-type-',
+				a += s(u), a += '" value="0" checked>\n<span>', a += s(l("Rolling")), a +=
+				'</span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-type-',
+				a += s(u), a += '" value="2">\n<span>', a += s(l("Bottom")), a +=
+				'</span>\n</label>\n</div>\n</div>\n<input class="dplayer-comment-input" type="text" placeholder="',
 				a += s(l("Input danmaku, hit Enter")), a +=
-				'" maxlength="30">\n        <button class="dplayer-icon dplayer-send-icon" data-balloon="', a += s(l("Send")),
-				a += '" data-balloon-pos="up">\n            <span class="dplayer-icon-content">', a += c.send, a +=
-				'</span>\n        </button>\n    </div>\n    <div class="dplayer-icons dplayer-icons-left">\n        <button class="dplayer-icon dplayer-play-icon">\n            <span class="dplayer-icon-content">',
+				'" maxlength="30">\n<button class="dplayer-icon dplayer-send-icon" data-balloon="', a += s(l("Send")),
+				a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.send, a +=
+				'</span>\n</button>\n</div>\n<div class="dplayer-icons dplayer-icons-left">\n<button class="dplayer-icon dplayer-play-icon">\n<span class="dplayer-icon-content">',
 				a += c.play, a +=
-				'</span>\n        </button>\n        <div class="dplayer-volume">\n            <button class="dplayer-icon dplayer-volume-icon">\n                <span class="dplayer-icon-content">',
-				a += c.volumeDown, a +=
-				'</span>\n            </button>\n            <div class="dplayer-volume-bar-wrap" data-balloon-pos="up">\n                <div class="dplayer-volume-bar">\n                    <div class="dplayer-volume-bar-inner" style="background: ',
-				a += s(r.theme), a += ';">\n                        <span class="dplayer-thumb" style="background: ', a += s(r
-					.theme), a +=
-				'"></span>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <span class="dplayer-time">\n            <span class="dplayer-ptime">0:00</span> /\n            <span class="dplayer-dtime">0:00</span>\n        </span>\n        ',
+				'</span>\n</button>\n<span class="dplayer-time">\n<span class="dplayer-ptime">0:00</span> /\n<span class="dplayer-dtime">0:00</span>\n</span>\n',
 				r.live && (a +=
-					'\n        <span class="dplayer-live-badge"><span class="dplayer-live-dot" style="background: ', a += s(r.theme),
-					a += ';"></span>', a += s(l("Live")), a += "</span>\n        "), a +=
-				'\n    </div>\n    <div class="dplayer-icons dplayer-icons-right">\n        ', r.video.quality && (a +=
-					'\n        <div class="dplayer-quality">\n            <button class="dplayer-icon dplayer-quality-icon">', a +=
+					'\n<span class="dplayer-live-badge"><span class="dplayer-live-dot" style="background: ', a += s(r.theme),
+					a += ';"></span>', a += s(l("Live")), a += "</span>\n"), a +=
+				'\n</div>\n<div class="dplayer-icons dplayer-icons-right">\n<div class="dplayer-volume">\n<button class="dplayer-icon dplayer-volume-icon">\n<span class="dplayer-icon-content">',
+				a += c.volumeDown, a +=
+				'</span>\n</button>\n<div class="dplayer-volume-bar-wrap" data-balloon-pos="up">\n<div class="dplayer-volume-bar">\n<div class="dplayer-volume-bar-inner" style="background: ',
+				a += s(r.theme), a += ';">\n<span class="dplayer-thumb" style="background: ', a += s(r.theme), a +=
+				'"></span>\n</div>\n</div>\n</div>\n</div>\n', r.video.quality && (a +=
+					'\n<div class="dplayer-quality">\n<button class="dplayer-icon dplayer-quality-icon">', a +=
 					s(r.video.quality[r.video.defaultQuality].name), a +=
-					'</button>\n            <div class="dplayer-quality-mask">\n                <div class="dplayer-quality-list">\n                ',
+					'</button>\n<div class="dplayer-quality-mask">\n<div class="dplayer-quality-list">\n',
 					d(r.video.quality, function(e, t) {
-						a += '\n                    <div class="dplayer-quality-item" data-index="', a += s(t), a += '">', a += s(e
-							.name), a += "</div>\n                "
-					}), a += "\n                </div>\n            </div>\n        </div>\n        "), a += "\n        ", r.screenshot &&
-				(a += '\n        <div class="dplayer-icon dplayer-camera-icon" data-balloon="', a += s(l("Screenshot")), a +=
-					'" data-balloon-pos="up">\n            <span class="dplayer-icon-content">', a += c.camera, a +=
-					"</span>\n        </div>\n        "), a +=
-				'\n       \n        <div class="dplayer-comment">\n            <button class="dplayer-icon dplayer-comment-icon" data-balloon="',
+						a += '\n<div class="dplayer-quality-item" data-index="', a += s(t), a += '">', a += s(e
+							.name), a += "</div>\n"
+					}), a += "\n</div>\n</div>\n</div>\n"), a += "\n", r.screenshot &&
+				(a += '\n<button class="dplayer-icon dplayer-camera-icon" data-balloon="', a += s(l("Screenshot")), a +=
+					'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.camera, a +=
+					"</span>\n</button>\n"), a +=
+				'\n   \n<div class="dplayer-comment">\n<button class="dplayer-icon dplayer-comment-icon" data-balloon="',
 				a += s(l("Send danmaku")), a +=
-				'" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a += c.comment, a +=
-				"</span>\n            </button>\n        </div>\n        ", r.subtitle && (a +=
-					'\n        <div class="dplayer-subtitle-btn">\n            <button class="dplayer-icon dplayer-subtitle-icon" data-balloon="',
+				'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.comment, a +=
+				"</span>\n</button>\n</div>\n", r.subtitle && (a +=
+					'\n<div class="dplayer-subtitle-btn">\n<button class="dplayer-icon dplayer-subtitle-icon" data-balloon="',
 					a += s(l("Hide subtitle")), a +=
-					'" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a += c.subtitle, a +=
-					"</span>\n            </button>\n        </div>\n        "), a +=
-				'\n     <div class="dplayer-pip">    <button id="pip-btn" class="dplayer-icon dplayer-pip-icon" data-balloon="画中画" data-balloon-pos="up" onclick="pip()">    <span id="pip-svg" class="dplayer-icon-content"><svg t="1580656357666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9888" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="9889" fill="#eee"></path></svg></span>    </button>    </div>  \n  <div class="dplayer-setting">\n            <button class="dplayer-icon dplayer-setting-icon" data-balloon="',
-				a += s(l("Setting")), a += '" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a +=
+					'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.subtitle, a +=
+					"</span>\n</button>\n</div>\n"), a +=
+				'\n <div class="dplayer-pip"><button id="pip-btn" class="dplayer-icon dplayer-pip-icon" data-balloon="画中画" data-balloon-pos="up" onclick="pip()"><span id="pip-svg" class="dplayer-icon-content"><svg t="1580656357666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9888" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="9889" fill="#eeeeee"></path></svg></span></button></div>  \n  <div class="dplayer-setting">\n<button class="dplayer-icon dplayer-setting-icon" data-balloon="',
+				a += s(l("Setting")), a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a +=
 				c.setting, a +=
-				'</span>\n            </button>\n            <div class="dplayer-setting-box">\n                <div class="dplayer-setting-origin-panel">\n                    <div class="dplayer-setting-item dplayer-setting-speed">\n                        <span class="dplayer-label">',
-				a += s(l("Speed")), a += '</span>\n                        <div class="dplayer-toggle">', a += c.right, a +=
-				'</div>\n                    </div>\n                    <div class="dplayer-setting-item dplayer-setting-loop">\n                        <span class="dplayer-label">',
+				'</span>\n</button>\n<div class="dplayer-setting-box">\n<div class="dplayer-setting-origin-panel">\n<div class="dplayer-setting-item dplayer-setting-speed">\n<span class="dplayer-label">',
+				a += s(l("Speed")), a += '</span>\n<div class="dplayer-toggle">', a += c.right, a +=
+				'</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-loop">\n<span class="dplayer-label">',
 				a += s(l("Loop")), a +=
-				'</span>\n                        <div class="dplayer-toggle">\n                            <input class="dplayer-toggle-setting-input" type="checkbox" name="dplayer-toggle">\n                            <label for="dplayer-toggle"></label>\n                        </div>\n                    </div>\n                    <div class="dplayer-setting-item dplayer-setting-showdan">\n                        <span class="dplayer-label">',
+				'</span>\n<div class="dplayer-toggle">\n<input class="dplayer-toggle-setting-input" type="checkbox" name="dplayer-toggle">\n<label for="dplayer-toggle"></label>\n</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-showdan">\n<span class="dplayer-label">',
 				a += s(l("Show danmaku")), a +=
-				'</span>\n                        <div class="dplayer-toggle">\n                            <input class="dplayer-showdan-setting-input" type="checkbox" name="dplayer-toggle-dan">\n                            <label for="dplayer-toggle-dan"></label>\n                        </div>\n                    </div>\n                    <div class="dplayer-setting-item dplayer-setting-danunlimit">\n                        <span class="dplayer-label">',
+				'</span>\n<div class="dplayer-toggle">\n<input class="dplayer-showdan-setting-input" type="checkbox" name="dplayer-toggle-dan">\n<label for="dplayer-toggle-dan"></label>\n</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-danunlimit">\n<span class="dplayer-label">',
 				a += s(l("Unlimited danmaku")), a +=
-				'</span>\n                        <div class="dplayer-toggle">\n                            <input class="dplayer-danunlimit-setting-input" type="checkbox" name="dplayer-toggle-danunlimit">\n                            <label for="dplayer-toggle-danunlimit"></label>\n                        </div>\n                    </div>\n                    <div class="dplayer-setting-item dplayer-setting-danmaku">\n                        <span class="dplayer-label">',
+				'</span>\n<div class="dplayer-toggle">\n<input class="dplayer-danunlimit-setting-input" type="checkbox" name="dplayer-toggle-danunlimit">\n<label for="dplayer-toggle-danunlimit"></label>\n</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-danmaku">\n<span class="dplayer-label">',
 				a += s(l("Opacity for danmaku")), a +=
-				'</span>\n                        <div class="dplayer-danmaku-bar-wrap">\n                            <div class="dplayer-danmaku-bar">\n                                <div class="dplayer-danmaku-bar-inner">\n                                    <span class="dplayer-thumb"></span>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class="dplayer-setting-speed-panel">\n                    <div class="dplayer-setting-speed-item" data-speed="0.5">\n                        <span class="dplayer-label">0.5</span>\n                    </div>\n                    <div class="dplayer-setting-speed-item" data-speed="0.75">\n                        <span class="dplayer-label">0.75</span>\n                    </div>\n                    <div class="dplayer-setting-speed-item" data-speed="1">\n                        <span class="dplayer-label">',
+				'</span>\n<div class="dplayer-danmaku-bar-wrap">\n<div class="dplayer-danmaku-bar">\n<div class="dplayer-danmaku-bar-inner">\n<span class="dplayer-thumb"></span>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div class="dplayer-setting-speed-panel">\n<div class="dplayer-setting-speed-item" data-speed="0.5">\n<span class="dplayer-label">0.5</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="0.75">\n<span class="dplayer-label">0.75</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1">\n<span class="dplayer-label">',
 				a += s(l("Normal")), a +=
-				'</span>\n                    </div>\n                    <div class="dplayer-setting-speed-item" data-speed="1.25">\n                        <span class="dplayer-label">1.25</span>\n                    </div>\n                    <div class="dplayer-setting-speed-item" data-speed="1.5">\n                        <span class="dplayer-label">1.5</span>\n                    </div>\n                    <div class="dplayer-setting-speed-item" data-speed="2">\n                        <span class="dplayer-label">2</span>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="dplayer-full">\n            <button class="dplayer-icon dplayer-full-in-icon" data-balloon="',
+				'</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1.25">\n<span class="dplayer-label">1.25</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1.5">\n<span class="dplayer-label">1.5</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="2">\n<span class="dplayer-label">2</span>\n</div>\n</div>\n</div>\n</div>\n<div class="dplayer-full">\n<button class="dplayer-icon dplayer-full-in-icon" data-balloon="',
 				a += s(l("Web full screen")), a +=
-				'" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a += c.fullWeb, a +=
-				'</span>\n            </button>\n            <button class="dplayer-icon dplayer-full-icon" data-balloon="', a +=
-				s(l("Full screen")), a += '" data-balloon-pos="up">\n                <span class="dplayer-icon-content">', a +=
+				'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.fullWeb, a +=
+				'</span>\n</button>\n<button class="dplayer-icon dplayer-full-icon" data-balloon="', a +=
+				s(l("Full screen")), a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a +=
 				c.full, a +=
-				'</span>\n            </button>\n        </div>\n    </div>\n    <div class="dplayer-bar-wrap">\n        <div class="dplayer-bar-time hidden">00:00</div>\n        <div class="dplayer-bar-preview"></div>\n        <div class="dplayer-bar">\n            <div class="dplayer-loaded" style="width: 0;"></div>\n            <div class="dplayer-played" style="width: 0; background: ',
-				a += s(r.theme), a += '">\n                <span class="dplayer-thumb" style="background: ', a += s(r.theme),
+				'</span>\n</button>\n</div>\n</div>\n<div class="dplayer-bar-wrap">\n<div class="dplayer-bar-time hidden">00:00</div>\n<div class="dplayer-bar-preview"></div>\n<div class="dplayer-bar">\n<div class="dplayer-loaded" style="width: 0;"></div>\n<div class="dplayer-played" style="width: 0; background: ',
+				a += s(r.theme), a += '">\n<span class="dplayer-thumb" style="background: ', a += s(r.theme),
 				a +=
-				'"></span>\n            </div>\n        </div>\n    </div>\n</div>\n<div class="dplayer-info-panel dplayer-info-panel-hide">\n    <div class="dplayer-info-panel-close">[x]</div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-version">\n        <span class="dplayer-info-panel-item-title">Player version</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-fps">\n        <span class="dplayer-info-panel-item-title">Player FPS</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-type">\n        <span class="dplayer-info-panel-item-title">Video type</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-url">\n        <span class="dplayer-info-panel-item-title">Video url</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-resolution">\n        <span class="dplayer-info-panel-item-title">Video resolution</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-duration">\n        <span class="dplayer-info-panel-item-title">Video duration</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    ',
+				'"></span>\n</div>\n</div>\n</div>\n</div>\n<div class="dplayer-info-panel dplayer-info-panel-hide">\n<div class="dplayer-info-panel-close">[x]</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-version">\n<span class="dplayer-info-panel-item-title">Player version</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-fps">\n<span class="dplayer-info-panel-item-title">Player FPS</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-type">\n<span class="dplayer-info-panel-item-title">Video type</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-url">\n<span class="dplayer-info-panel-item-title">Video url</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-resolution">\n<span class="dplayer-info-panel-item-title">Video resolution</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-duration">\n<span class="dplayer-info-panel-item-title">Video duration</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n',
 				r.danmaku && (a +=
-					'\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-danmaku-id">\n        <span class="dplayer-info-panel-item-title">Danamku id</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-danmaku-api">\n        <span class="dplayer-info-panel-item-title">Danamku api</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    <div class="dplayer-info-panel-item dplayer-info-panel-item-danmaku-amount">\n        <span class="dplayer-info-panel-item-title">Danamku amount</span>\n        <span class="dplayer-info-panel-item-data"></span>\n    </div>\n    '
-				), a += '\n</div>\n<div class="dplayer-menu">\n    ', d(r.contextmenu, function(e, t) {
-					a += '\n        <div class="dplayer-menu-item">\n            <a', e.link && (a += ' target="_blank"'), a +=
+					'\n<div class="dplayer-info-panel-item dplayer-info-panel-item-danmaku-id">\n<span class="dplayer-info-panel-item-title">Danamku id</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-danmaku-api">\n<span class="dplayer-info-panel-item-title">Danamku api</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n<div class="dplayer-info-panel-item dplayer-info-panel-item-danmaku-amount">\n<span class="dplayer-info-panel-item-title">Danamku amount</span>\n<span class="dplayer-info-panel-item-data"></span>\n</div>\n'
+				), a += '\n</div>\n<div class="dplayer-menu">\n', d(r.contextmenu, function(e, t) {
+					a += '\n<div class="dplayer-menu-item">\n<a', e.link && (a += ' target="_blank"'), a +=
 						' href="', a += s(e.link || "javascript:void(0);"), a += '">', a += s(l(e.text)), a +=
-						"</a>\n        </div>\n    "
+						"</a>\n</div>\n"
 				}), a += '\n</div>\n<div class="dplayer-notice"></div>'
 		}
 	}, function(e, t) {
 		e.exports =
 			//加载
 			'<svg version="1.1" viewBox="0 0 22 22"><svg x="7" y="1"><circle class="diplayer-loading-dot diplayer-loading-dot-0" cx="4" cy="4" r="2"></circle></svg><svg x="11" y="3"><circle class="diplayer-loading-dot diplayer-loading-dot-1" cx="4" cy="4" r="2"></circle></svg><svg x="13" y="7"><circle class="diplayer-loading-dot diplayer-loading-dot-2" cx="4" cy="4" r="2"></circle></svg><svg x="11" y="11"><circle class="diplayer-loading-dot diplayer-loading-dot-3" cx="4" cy="4" r="2"></circle></svg><svg x="7" y="13"><circle class="diplayer-loading-dot diplayer-loading-dot-4" cx="4" cy="4" r="2"></circle></svg><svg x="3" y="11"><circle class="diplayer-loading-dot diplayer-loading-dot-5" cx="4" cy="4" r="2"></circle></svg><svg x="1" y="7"><circle class="diplayer-loading-dot diplayer-loading-dot-6" cx="4" cy="4" r="2"></circle></svg><svg x="3" y="3"><circle class="diplayer-loading-dot diplayer-loading-dot-7" cx="4" cy="4" r="2"></circle></svg></svg>'
-		//'<svg viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="circle" class="g-circles g-circles--v2">          <circle id="12" transform="translate(35, 16.698730) rotate(-30) translate(-35, -16.698730) " cx="35" cy="16.6987298" r="10"></circle>          <circle id="11" transform="translate(16.698730, 35) rotate(-60) translate(-16.698730, -35) " cx="16.6987298" cy="35" r="10"></circle>          <circle id="10" transform="translate(10, 60) rotate(-90) translate(-10, -60) " cx="10" cy="60" r="10"></circle>          <circle id="9" transform="translate(16.698730, 85) rotate(-120) translate(-16.698730, -85) " cx="16.6987298" cy="85" r="10"></circle>          <circle id="8" transform="translate(35, 103.301270) rotate(-150) translate(-35, -103.301270) " cx="35" cy="103.30127" r="10"></circle>          <circle id="7" cx="60" cy="110" r="10"></circle>          <circle id="6" transform="translate(85, 103.301270) rotate(-30) translate(-85, -103.301270) " cx="85" cy="103.30127" r="10"></circle>          <circle id="5" transform="translate(103.301270, 85) rotate(-60) translate(-103.301270, -85) " cx="103.30127" cy="85" r="10"></circle>          <circle id="4" transform="translate(110, 60) rotate(-90) translate(-110, -60) " cx="110" cy="60" r="10"></circle>         <circle id="3" transform="translate(103.301270, 35) rotate(-120) translate(-103.301270, -35) " cx="103.30127" cy="35" r="10"></circle>          <circle id="2" transform="translate(85, 16.698730) rotate(-150) translate(-85, -16.698730) " cx="85" cy="16.6987298" r="10"></circle>         <circle id="1" cx="60" cy="10" r="10"></circle></g></svg>'
-		''
 	}, function(e, t) {
 		e.exports =
 			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M26.667 5.333h-21.333c-0 0-0.001 0-0.001 0-1.472 0-2.666 1.194-2.666 2.666 0 0 0 0.001 0 0.001v-0 16c0 0 0 0.001 0 0.001 0 1.472 1.194 2.666 2.666 2.666 0 0 0.001 0 0.001 0h21.333c0 0 0.001 0 0.001 0 1.472 0 2.666-1.194 2.666-2.666 0-0 0-0.001 0-0.001v0-16c0-0 0-0.001 0-0.001 0-1.472-1.194-2.666-2.666-2.666-0 0-0.001 0-0.001 0h0zM5.333 16h5.333v2.667h-5.333v-2.667zM18.667 24h-13.333v-2.667h13.333v2.667zM26.667 24h-5.333v-2.667h5.333v2.667zM26.667 18.667h-13.333v-2.667h13.333v2.667z"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//截图
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M16 23c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6zM16 13c-2.206 0-4 1.794-4 4s1.794 4 4 4c2.206 0 4-1.794 4-4s-1.794-4-4-4zM27 28h-22c-1.654 0-3-1.346-3-3v-16c0-1.654 1.346-3 3-3h3c0.552 0 1 0.448 1 1s-0.448 1-1 1h-3c-0.551 0-1 0.449-1 1v16c0 0.552 0.449 1 1 1h22c0.552 0 1-0.448 1-1v-16c0-0.551-0.448-1-1-1h-11c-0.552 0-1-0.448-1-1s0.448-1 1-1h11c1.654 0 3 1.346 3 3v16c0 1.654-1.346 3-3 3zM24 10.5c0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5c0-0.828-0.672-1.5-1.5-1.5s-1.5 0.672-1.5 1.5zM15 4c0 0.552-0.448 1-1 1h-4c-0.552 0-1-0.448-1-1v0c0-0.552 0.448-1 1-1h4c0.552 0 1 0.448 1 1v0z"></path></svg>'
 			'<svg t="1580659865767" class="icon" viewBox="0 0 1041 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10129" width="32" height="32"><path d="M99.484203 889.803932A43.250983 43.250983 0 0 1 86.779661 859.118644V208.271186H43.389831a43.389831 43.389831 0 1 1 0-86.779661H86.779661V43.389831a43.389831 43.389831 0 0 1 86.779661 0V121.491525h737.627119A43.389831 43.389831 0 0 1 954.576271 164.881356V815.728814h43.389831a43.389831 43.389831 0 1 1 0 86.779661H954.576271v78.101694a43.389831 43.389831 0 1 1-86.779661 0V902.508475H130.169492c-11.975593 0-22.823051-4.859661-30.685289-12.704543zM173.559322 815.728814h694.237288V208.271186H173.559322v607.457628z m130.169492-416.542373a60.745763 60.745763 0 1 1 0-121.491526 60.745763 60.745763 0 0 1 0 121.491526z m-35.076339 350.58983a34.711864 34.711864 0 0 1-27.943051-55.330712l182.115796-246.575728a34.711864 34.711864 0 0 1 53.751322-2.551323l15.672407 17.460068a34.711864 34.711864 0 0 0 52.588475-1.041356l44.41383-53.664542a34.711864 34.711864 0 0 1 56.753899 4.703458l165.436745 284.845559a34.711864 34.711864 0 0 1-30.025762 52.154576H268.669831z" fill="#eeeeee" p-id="10130"></path></svg>'
 	}, function(e, t) {
 		e.exports =
@@ -2121,55 +2119,39 @@
 			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M27.128 0.38h-22.553c-2.336 0-4.229 1.825-4.229 4.076v16.273c0 2.251 1.893 4.076 4.229 4.076h4.229v-2.685h8.403l-8.784 8.072 1.566 1.44 7.429-6.827h9.71c2.335 0 4.229-1.825 4.229-4.076v-16.273c0-2.252-1.894-4.076-4.229-4.076zM28.538 19.403c0 1.5-1.262 2.717-2.819 2.717h-8.36l-0.076-0.070-0.076 0.070h-11.223c-1.557 0-2.819-1.217-2.819-2.717v-13.589c0-1.501 1.262-2.718 2.819-2.718h19.734c1.557 0 2.819-0.141 2.819 1.359v14.947zM9.206 10.557c-1.222 0-2.215 0.911-2.215 2.036s0.992 2.035 2.215 2.035c1.224 0 2.216-0.911 2.216-2.035s-0.992-2.036-2.216-2.036zM22.496 10.557c-1.224 0-2.215 0.911-2.215 2.036s0.991 2.035 2.215 2.035c1.224 0 2.215-0.911 2.215-2.035s-0.991-2.036-2.215-2.036zM15.852 10.557c-1.224 0-2.215 0.911-2.215 2.036s0.991 2.035 2.215 2.035c1.222 0 2.215-0.911 2.215-2.035s-0.992-2.036-2.215-2.036z"></path></svg>'
 	}, function(e, t) {
 		e.exports =
-			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M22 16l-10.105-10.6-1.895 1.987 8.211 8.613-8.211 8.612 1.895 1.988 8.211-8.613z"></path></svg>'
+			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M22 16l-10.105-10.6-1.895 1.987 8.211 8.613-8.211 8.612 1.895 1.988 8.211-8.613z" fill="#555"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//设置
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 28"><path d="M28.633 17.104c0.035 0.21 0.026 0.463-0.026 0.76s-0.14 0.598-0.262 0.904c-0.122 0.306-0.271 0.581-0.445 0.825s-0.367 0.419-0.576 0.524c-0.209 0.105-0.393 0.157-0.55 0.157s-0.332-0.035-0.524-0.105c-0.175-0.052-0.393-0.1-0.655-0.144s-0.528-0.052-0.799-0.026c-0.271 0.026-0.541 0.083-0.812 0.17s-0.502 0.236-0.694 0.445c-0.419 0.437-0.664 0.934-0.734 1.493s0.009 1.092 0.236 1.598c0.175 0.349 0.148 0.699-0.079 1.048-0.105 0.14-0.271 0.284-0.498 0.432s-0.476 0.284-0.747 0.406-0.555 0.218-0.851 0.288c-0.297 0.070-0.559 0.105-0.786 0.105-0.157 0-0.306-0.061-0.445-0.183s-0.236-0.253-0.288-0.393h-0.026c-0.192-0.541-0.52-1.009-0.982-1.402s-1-0.589-1.611-0.589c-0.594 0-1.131 0.197-1.611 0.589s-0.816 0.851-1.009 1.375c-0.087 0.21-0.218 0.362-0.393 0.458s-0.367 0.144-0.576 0.144c-0.244 0-0.52-0.044-0.825-0.131s-0.611-0.197-0.917-0.327c-0.306-0.131-0.581-0.284-0.825-0.458s-0.428-0.349-0.55-0.524c-0.087-0.122-0.135-0.266-0.144-0.432s0.057-0.397 0.197-0.694c0.192-0.402 0.266-0.86 0.223-1.375s-0.266-0.991-0.668-1.428c-0.244-0.262-0.541-0.432-0.891-0.511s-0.681-0.109-0.995-0.092c-0.367 0.017-0.742 0.087-1.127 0.21-0.244 0.070-0.489 0.052-0.734-0.052-0.192-0.070-0.371-0.231-0.537-0.485s-0.314-0.533-0.445-0.838c-0.131-0.306-0.231-0.62-0.301-0.943s-0.087-0.59-0.052-0.799c0.052-0.384 0.227-0.629 0.524-0.734 0.524-0.21 0.995-0.555 1.415-1.035s0.629-1.017 0.629-1.611c0-0.611-0.21-1.144-0.629-1.598s-0.891-0.786-1.415-0.996c-0.157-0.052-0.288-0.179-0.393-0.38s-0.157-0.406-0.157-0.616c0-0.227 0.035-0.48 0.105-0.76s0.162-0.55 0.275-0.812 0.244-0.502 0.393-0.72c0.148-0.218 0.31-0.38 0.485-0.485 0.14-0.087 0.275-0.122 0.406-0.105s0.275 0.052 0.432 0.105c0.524 0.21 1.070 0.275 1.637 0.197s1.070-0.327 1.506-0.747c0.21-0.209 0.362-0.467 0.458-0.773s0.157-0.607 0.183-0.904c0.026-0.297 0.026-0.568 0-0.812s-0.048-0.419-0.065-0.524c-0.035-0.105-0.066-0.227-0.092-0.367s-0.013-0.262 0.039-0.367c0.105-0.244 0.293-0.458 0.563-0.642s0.563-0.336 0.878-0.458c0.314-0.122 0.62-0.214 0.917-0.275s0.533-0.092 0.707-0.092c0.227 0 0.406 0.074 0.537 0.223s0.223 0.301 0.275 0.458c0.192 0.471 0.507 0.886 0.943 1.244s0.952 0.537 1.546 0.537c0.611 0 1.153-0.17 1.624-0.511s0.803-0.773 0.996-1.297c0.070-0.14 0.179-0.284 0.327-0.432s0.301-0.223 0.458-0.223c0.244 0 0.511 0.035 0.799 0.105s0.572 0.166 0.851 0.288c0.279 0.122 0.537 0.279 0.773 0.472s0.423 0.402 0.563 0.629c0.087 0.14 0.113 0.293 0.079 0.458s-0.070 0.284-0.105 0.354c-0.227 0.506-0.297 1.039-0.21 1.598s0.341 1.048 0.76 1.467c0.419 0.419 0.934 0.651 1.546 0.694s1.179-0.057 1.703-0.301c0.14-0.087 0.31-0.122 0.511-0.105s0.371 0.096 0.511 0.236c0.262 0.244 0.493 0.616 0.694 1.113s0.336 1 0.406 1.506c0.035 0.297-0.013 0.528-0.144 0.694s-0.266 0.275-0.406 0.327c-0.542 0.192-1.004 0.528-1.388 1.009s-0.576 1.026-0.576 1.637c0 0.594 0.162 1.113 0.485 1.559s0.747 0.764 1.27 0.956c0.122 0.070 0.227 0.14 0.314 0.21 0.192 0.157 0.323 0.358 0.393 0.602v0zM16.451 19.462c0.786 0 1.528-0.149 2.227-0.445s1.305-0.707 1.821-1.231c0.515-0.524 0.921-1.131 1.218-1.821s0.445-1.428 0.445-2.214c0-0.786-0.148-1.524-0.445-2.214s-0.703-1.292-1.218-1.808c-0.515-0.515-1.122-0.921-1.821-1.218s-1.441-0.445-2.227-0.445c-0.786 0-1.524 0.148-2.214 0.445s-1.292 0.703-1.808 1.218c-0.515 0.515-0.921 1.118-1.218 1.808s-0.445 1.428-0.445 2.214c0 0.786 0.149 1.524 0.445 2.214s0.703 1.297 1.218 1.821c0.515 0.524 1.118 0.934 1.808 1.231s1.428 0.445 2.214 0.445v0z"></path></svg>'
-			//'<svg t="1579287616601" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1979" width="26" height="26"><path d="M291.5 771.4H875c28.6 0 51.8 23.2 51.8 51.8 0 28.6-23.2 51.8-51.8 51.8H291.5c-23.4 40.6-71.2 60.4-116.5 48.3-45.3-12.1-76.8-53.2-76.8-100 0-46.9 31.5-87.9 76.8-100 45.3-12.3 93.1 7.5 116.5 48.1z m131.4-207.1H150.1c-28.6 0-51.8-23.2-51.8-51.8 0-28.6 23.2-51.8 51.8-51.8h272.8c18.5-32 52.7-51.8 89.7-51.8s71.2 19.7 89.7 51.8h272.8c28.6 0 51.8 23.2 51.8 51.8 0 28.6-23.2 51.8-51.8 51.8H602.3c-18.5 32-52.7 51.8-89.7 51.8s-71.2-19.8-89.7-51.8zM733.6 150c23.4-40.6 71.2-60.4 116.5-48.3 45.3 12.1 76.8 53.2 76.8 100 0 46.9-31.5 87.9-76.8 100-45.3 12.1-93.1-7.7-116.5-48.3H150.1c-28.6 0-51.8-23.2-51.8-51.8 0-28.6 23.2-51.8 51.8-51.8h583.5z m0 0" p-id="1980"></path></svg>'
-			//'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="11" r="2"></circle><path d="M19.164 8.861L17.6 8.6a6.978 6.978 0 00-1.186-2.099l.574-1.533a1 1 0 00-.436-1.217l-1.997-1.153a1.001 1.001 0 00-1.272.23l-1.008 1.225a7.04 7.04 0 00-2.55.001L8.716 2.829a1 1 0 00-1.272-.23L5.447 3.751a1 1 0 00-.436 1.217l.574 1.533A6.997 6.997 0 004.4 8.6l-1.564.261A.999.999 0 002 9.847v2.306c0 .489.353.906.836.986l1.613.269a7 7 0 001.228 2.075l-.558 1.487a1 1 0 00.436 1.217l1.997 1.153c.423.244.961.147 1.272-.23l1.04-1.263a7.089 7.089 0 002.272 0l1.04 1.263a1 1 0 001.272.23l1.997-1.153a1 1 0 00.436-1.217l-.557-1.487c.521-.61.94-1.31 1.228-2.075l1.613-.269a.999.999 0 00.835-.986V9.847a.999.999 0 00-.836-.986zM11 15a4 4 0 110-8 4 4 0 010 8z"></path></svg>'
-			//'<svg t="1579288860700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1553" width="16" height="16"><path d="M512 1004.5L85.3 758.2V265.5L512 19.1l426.7 246.3v492.7L512 1004.5zM170.7 708.9L512 906l341.3-197.1V314.8L512 117.7 170.7 314.8v394.1z" fill="#3688FF" p-id="1554"></path><path d="M511.8 640c-31 0-60.6-11.1-84.1-31.7-25.7-22.5-41.1-53.7-43.4-87.8-4.6-70.4 48.9-131.5 119.3-136.2 33.9-2.2 67 8.9 92.8 31.4 25.7 22.5 41.1 53.7 43.4 87.8 4.6 70.4-48.9 131.5-119.3 136.2-3 0.2-5.8 0.3-8.7 0.3z m0.3-170.7c-1 0-1.9 0-2.9 0.1-23.5 1.6-41.3 21.9-39.8 45.4 0.8 11.4 5.9 21.8 14.4 29.3 8.6 7.5 19.5 11.2 30.9 10.5 23.5-1.6 41.3-21.9 39.8-45.4-0.8-11.4-5.9-21.8-14.5-29.3-7.7-6.9-17.6-10.6-27.9-10.6z" fill="#5F6379" p-id="1555"></path></svg>'
-			//'<svg t="1579289774782" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1610" width="32" height="32"><path d="M512 748.3392c-16.9984 0-30.72-13.7216-30.72-30.72V496.0256c0-16.9984 13.7216-30.72 30.72-30.72s30.72 13.7216 30.72 30.72v221.5936c0 16.9984-13.7216 30.72-30.72 30.72z" fill="#dddddd" p-id="1611"></path><path d="M512 911.36c-13.1072 0-26.2144-3.4816-37.888-10.0352l-279.9616-161.792a76.3904 76.3904 0 0 1-38.0928-65.7408V350.4128c0-27.0336 14.5408-52.224 37.888-65.7408L473.9072 122.88c23.3472-13.5168 52.6336-13.5168 75.9808 0l279.9616 161.792a76.3904 76.3904 0 0 1 38.0928 65.7408V673.792c0 27.0336-14.5408 52.224-37.888 65.7408L550.0928 901.12c-11.8784 6.7584-24.9856 10.24-38.0928 10.24z m0-737.28c-2.4576 0-5.12 0.6144-7.3728 2.048l-279.9616 161.5872c-4.5056 2.6624-7.3728 7.3728-7.3728 12.6976V673.792c0 5.12 2.8672 10.0352 7.3728 12.6976l279.9616 161.5872c4.5056 2.6624 10.0352 2.6624 14.5408 0l279.9616-161.5872c4.5056-2.6624 7.3728-7.3728 7.3728-12.6976V350.4128a14.9504 14.9504 0 0 0-7.3728-12.6976l-279.7568-161.792A15.72864 15.72864 0 0 0 512 174.08z" fill="#dddddd" p-id="1612"></path><path d="M512 526.7456c-5.3248 0-10.8544-1.4336-15.7696-4.3008l-168.3456-100.1472c-14.5408-8.6016-19.456-27.4432-10.6496-42.1888a30.72 30.72 0 0 1 42.1888-10.6496l168.3456 100.1472c14.5408 8.6016 19.456 27.4432 10.6496 42.1888-5.7344 9.4208-15.9744 14.9504-26.4192 14.9504z" fill="#dddddd" p-id="1613"></path><path d="M512 526.7456a30.72 30.72 0 0 1-26.4192-14.9504 30.9248 30.9248 0 0 1 10.6496-42.1888l168.3456-100.1472a30.9248 30.9248 0 0 1 42.1888 10.6496c8.6016 14.5408 3.8912 33.3824-10.6496 42.1888l-168.3456 100.1472c-4.9152 2.8672-10.4448 4.3008-15.7696 4.3008z" fill="#dddddd" p-id="1614"></path></svg>'
-			'<svg t="1579317494435" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3450" width="32" height="32"><path d="M699.733333 740.992a42.666667 42.666667 0 0 1 41.984 74.325333l-208.725333 117.845334a42.666667 42.666667 0 0 1-41.984 0l-341.333333-192.725334a42.666667 42.666667 0 0 1-21.674667-37.12V320.682667a42.666667 42.666667 0 0 1 21.674667-37.162667l341.333333-192.725333a42.666667 42.666667 0 0 1 41.984 0l341.333333 192.725333a42.666667 42.666667 0 0 1 21.674667 37.12v382.592a42.666667 42.666667 0 1 1-85.333333 0V345.6l-298.666667-168.618667L213.333333 345.6v332.8l298.666667 168.618667 187.733333-106.026667zM341.333333 512a42.666667 42.666667 0 0 1 85.333334 0 85.333333 85.333333 0 1 0 85.333333-85.333333 42.666667 42.666667 0 0 1 0-85.333334 170.666667 170.666667 0 1 1-170.666667 170.666667z" p-id="3451" fill="#dddddd"></path></svg>'
+			'<svg t="1579317494435" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3450" width="32" height="32"><path d="M699.733333 740.992a42.666667 42.666667 0 0 1 41.984 74.325333l-208.725333 117.845334a42.666667 42.666667 0 0 1-41.984 0l-341.333333-192.725334a42.666667 42.666667 0 0 1-21.674667-37.12V320.682667a42.666667 42.666667 0 0 1 21.674667-37.162667l341.333333-192.725333a42.666667 42.666667 0 0 1 41.984 0l341.333333 192.725333a42.666667 42.666667 0 0 1 21.674667 37.12v382.592a42.666667 42.666667 0 1 1-85.333333 0V345.6l-298.666667-168.618667L213.333333 345.6v332.8l298.666667 168.618667 187.733333-106.026667zM341.333333 512a42.666667 42.666667 0 0 1 85.333334 0 85.333333 85.333333 0 1 0 85.333333-85.333333 42.666667 42.666667 0 0 1 0-85.333334 170.666667 170.666667 0 1 1-170.666667 170.666667z" p-id="3451" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//网页全屏
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 33"><path d="M24.965 24.38h-18.132c-1.366 0-2.478-1.113-2.478-2.478v-11.806c0-1.364 1.111-2.478 2.478-2.478h18.132c1.366 0 2.478 1.113 2.478 2.478v11.806c0 1.364-1.11 2.478-2.478 2.478zM6.833 10.097v11.806h18.134l-0.002-11.806h-18.132zM2.478 28.928h5.952c0.684 0 1.238-0.554 1.238-1.239 0-0.684-0.554-1.238-1.238-1.238h-5.952v-5.802c0-0.684-0.554-1.239-1.238-1.239s-1.239 0.556-1.239 1.239v5.802c0 1.365 1.111 2.478 2.478 2.478zM30.761 19.412c-0.684 0-1.238 0.554-1.238 1.238v5.801h-5.951c-0.686 0-1.239 0.554-1.239 1.238 0 0.686 0.554 1.239 1.239 1.239h5.951c1.366 0 2.478-1.111 2.478-2.478v-5.801c0-0.683-0.554-1.238-1.239-1.238zM0 5.55v5.802c0 0.683 0.554 1.238 1.238 1.238s1.238-0.555 1.238-1.238v-5.802h5.952c0.684 0 1.238-0.554 1.238-1.238s-0.554-1.238-1.238-1.238h-5.951c-1.366-0.001-2.478 1.111-2.478 2.476zM32 11.35v-5.801c0-1.365-1.11-2.478-2.478-2.478h-5.951c-0.686 0-1.239 0.554-1.239 1.238s0.554 1.238 1.239 1.238h5.951v5.801c0 0.683 0.554 1.237 1.238 1.237 0.686 0.002 1.239-0.553 1.239-1.236z"></path></svg>'
-			//'<svg t="1579291118050" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="24435" width="32" height="32"><path d="M795.5 192H581c-19.6 0-35.6 15.7-36 35.3-0.4 20.3 16.4 36.7 36.7 36.7h128.4L581 393.1c-14 14-14 36.9 0 50.9s36.9 14 50.9 0L760 315.9v129c0 19.6 15.8 35.6 35.3 36 20.2 0.4 36.7-16.4 36.7-36.7V228.5c0-20.1-16.3-36.5-36.5-36.5zM442.2 760H313.8L443 630.9c14-14 14-36.9 0-50.9s-36.9-14-50.9 0L264 708.1V579c0-19.6-15.8-35.6-35.3-36-20.2-0.4-36.7 16.4-36.7 36.7v215.6c0 20.3 16.4 36.7 36.7 36.7H443c19.6 0 35.6-15.7 36-35.3 0.3-20.3-16.5-36.7-36.8-36.7z" p-id="24436" fill="#dddddd"></path><path d="M838 136c27.6 0 50 22.4 50 50v652c0 27.6-22.4 50-50 50H186c-27.6 0-50-22.4-50-50V186c0-27.6 22.4-50 50-50h652m0-72H186c-16.4 0-32.4 3.2-47.5 9.6-14.5 6.1-27.6 14.9-38.8 26.1-11.2 11.2-20 24.2-26.1 38.8-6.4 15.1-9.6 31.1-9.6 47.5v652c0 16.4 3.2 32.4 9.6 47.5 6.1 14.5 14.9 27.6 26.1 38.8 11.2 11.2 24.2 20 38.8 26.1 15.1 6.4 31.1 9.6 47.5 9.6h652c16.4 0 32.4-3.2 47.5-9.6 14.5-6.1 27.6-14.9 38.8-26.1 11.2-11.2 20-24.2 26.1-38.8 6.4-15.1 9.6-31.1 9.6-47.5V186c0-16.4-3.2-32.4-9.6-47.5-6.1-14.5-14.9-27.6-26.1-38.8-11.2-11.2-24.2-20-38.8-26.1-15.1-6.4-31.1-9.6-47.5-9.6z" p-id="24437" fill="#dddddd"></path></svg>'
-			'<svg t="1579317052514" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2780" width="32" height="32"><path d="M213.333333 213.333333v170.666667a42.666667 42.666667 0 1 1-85.333333 0V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h213.333333a42.666667 42.666667 0 1 1 0 85.333333H213.333333z m597.333334 0h-170.666667a42.666667 42.666667 0 0 1 0-85.333333h213.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v213.333333a42.666667 42.666667 0 0 1-85.333333 0V213.333333zM213.333333 810.666667h170.666667a42.666667 42.666667 0 0 1 0 85.333333H170.666667a42.666667 42.666667 0 0 1-42.666667-42.666667v-213.333333a42.666667 42.666667 0 0 1 85.333333 0v170.666667z m597.333334 0v-170.666667a42.666667 42.666667 0 0 1 85.333333 0v213.333333a42.666667 42.666667 0 0 1-42.666667 42.666667h-213.333333a42.666667 42.666667 0 0 1 0-85.333333h170.666667zM268.501333 328.832a42.666667 42.666667 0 0 1 60.330667-60.330667l85.333333 85.333334a42.666667 42.666667 0 1 1-60.330666 60.330666l-85.333334-85.333333z m341.333334 341.333333a42.666667 42.666667 0 0 1 60.330666-60.330666l85.333334 85.333333a42.666667 42.666667 0 0 1-60.330667 60.330667l-85.333333-85.333334z m60.330666-256a42.666667 42.666667 0 1 1-60.330666-60.330666l85.333333-85.333334a42.666667 42.666667 0 0 1 60.330667 60.330667l-85.333334 85.333333z m-341.333333 341.333334a42.666667 42.666667 0 1 1-60.330667-60.330667l85.333334-85.333333a42.666667 42.666667 0 1 1 60.330666 60.330666l-85.333333 85.333334z" p-id="2781" fill="#dddddd"></path></svg>'
+			'<svg t="1579317052514" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2780" width="32" height="32"><path d="M213.333333 213.333333v170.666667a42.666667 42.666667 0 1 1-85.333333 0V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h213.333333a42.666667 42.666667 0 1 1 0 85.333333H213.333333z m597.333334 0h-170.666667a42.666667 42.666667 0 0 1 0-85.333333h213.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v213.333333a42.666667 42.666667 0 0 1-85.333333 0V213.333333zM213.333333 810.666667h170.666667a42.666667 42.666667 0 0 1 0 85.333333H170.666667a42.666667 42.666667 0 0 1-42.666667-42.666667v-213.333333a42.666667 42.666667 0 0 1 85.333333 0v170.666667z m597.333334 0v-170.666667a42.666667 42.666667 0 0 1 85.333333 0v213.333333a42.666667 42.666667 0 0 1-42.666667 42.666667h-213.333333a42.666667 42.666667 0 0 1 0-85.333333h170.666667zM268.501333 328.832a42.666667 42.666667 0 0 1 60.330667-60.330667l85.333333 85.333334a42.666667 42.666667 0 1 1-60.330666 60.330666l-85.333334-85.333333z m341.333334 341.333333a42.666667 42.666667 0 0 1 60.330666-60.330666l85.333334 85.333333a42.666667 42.666667 0 0 1-60.330667 60.330667l-85.333333-85.333334z m60.330666-256a42.666667 42.666667 0 1 1-60.330666-60.330666l85.333333-85.333334a42.666667 42.666667 0 0 1 60.330667 60.330667l-85.333334 85.333333z m-341.333333 341.333334a42.666667 42.666667 0 1 1-60.330667-60.330667l85.333334-85.333333a42.666667 42.666667 0 1 1 60.330666 60.330666l-85.333333 85.333334z" p-id="2781" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//全屏
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 33"><path d="M6.667 28h-5.333c-0.8 0-1.333-0.533-1.333-1.333v-5.333c0-0.8 0.533-1.333 1.333-1.333s1.333 0.533 1.333 1.333v4h4c0.8 0 1.333 0.533 1.333 1.333s-0.533 1.333-1.333 1.333zM30.667 28h-5.333c-0.8 0-1.333-0.533-1.333-1.333s0.533-1.333 1.333-1.333h4v-4c0-0.8 0.533-1.333 1.333-1.333s1.333 0.533 1.333 1.333v5.333c0 0.8-0.533 1.333-1.333 1.333zM30.667 12c-0.8 0-1.333-0.533-1.333-1.333v-4h-4c-0.8 0-1.333-0.533-1.333-1.333s0.533-1.333 1.333-1.333h5.333c0.8 0 1.333 0.533 1.333 1.333v5.333c0 0.8-0.533 1.333-1.333 1.333zM1.333 12c-0.8 0-1.333-0.533-1.333-1.333v-5.333c0-0.8 0.533-1.333 1.333-1.333h5.333c0.8 0 1.333 0.533 1.333 1.333s-0.533 1.333-1.333 1.333h-4v4c0 0.8-0.533 1.333-1.333 1.333z"></path></svg>'
-			'<svg t="1579287542221" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1121" width="42" height="42"><path d="M759.808 559.616a51.2 51.2 0 0 0-51.2 51.2v110.592h-110.08a51.2 51.2 0 1 0 0 102.4h161.792a51.2 51.2 0 0 0 51.2-51.2v-161.792a51.2 51.2 0 0 0-51.712-51.2zM400.384 200.192H238.592a51.2 51.2 0 0 0-51.2 51.2v161.792a51.2 51.2 0 0 0 102.4 0V302.592h110.592a51.2 51.2 0 1 0 0-102.4zM530.944 471.552a51.2 51.2 0 1 0 0 72.704 51.2 51.2 0 0 0 0-72.704z" p-id="1122"></path></svg>'
+			'<svg t="1579287542221" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1121" width="42" height="42"><path d="M759.808 559.616a51.2 51.2 0 0 0-51.2 51.2v110.592h-110.08a51.2 51.2 0 1 0 0 102.4h161.792a51.2 51.2 0 0 0 51.2-51.2v-161.792a51.2 51.2 0 0 0-51.712-51.2zM400.384 200.192H238.592a51.2 51.2 0 0 0-51.2 51.2v161.792a51.2 51.2 0 0 0 102.4 0V302.592h110.592a51.2 51.2 0 1 0 0-102.4zM530.944 471.552a51.2 51.2 0 1 0 0 72.704 51.2 51.2 0 0 0 0-72.704z" p-id="1122" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//静音
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 21 32"><path d="M13.728 6.272v19.456q0 0.448-0.352 0.8t-0.8 0.32-0.8-0.32l-5.952-5.952h-4.672q-0.48 0-0.8-0.352t-0.352-0.8v-6.848q0-0.48 0.352-0.8t0.8-0.352h4.672l5.952-5.952q0.32-0.32 0.8-0.32t0.8 0.32 0.352 0.8z"></path></svg>'
-			'<svg t="1579317261061" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2990" width="32" height="32"><path d="M768 451.669333l97.834667-97.834666a42.666667 42.666667 0 0 1 60.330666 60.330666l-256 256a42.666667 42.666667 0 0 1-60.330666-60.330666L707.669333 512l-97.834666-97.834667a42.666667 42.666667 0 1 1 60.330666-60.330666L768 451.669333zM170.666667 426.666667v213.333333a42.666667 42.666667 0 0 1-85.333334 0V384a42.666667 42.666667 0 0 1 42.666667-42.666667h113.066667l201.6-161.28A42.666667 42.666667 0 0 1 512 213.333333v597.333334a42.666667 42.666667 0 0 1-69.333333 33.28l-213.333334-170.666667a42.666667 42.666667 0 1 1 53.333334-66.56L426.666667 721.92V302.08l-144 115.2A42.666667 42.666667 0 0 1 256 426.666667H170.666667z m652.501333 200.832a42.666667 42.666667 0 0 1 60.330667-60.330667l42.666666 42.666667a42.666667 42.666667 0 0 1-60.330666 60.330666l-42.666667-42.666666z" p-id="2991" fill="#dddddd"></path></svg>'
+			'<svg t="1579317261061" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2990" width="32" height="32"><path d="M768 451.669333l97.834667-97.834666a42.666667 42.666667 0 0 1 60.330666 60.330666l-256 256a42.666667 42.666667 0 0 1-60.330666-60.330666L707.669333 512l-97.834666-97.834667a42.666667 42.666667 0 1 1 60.330666-60.330666L768 451.669333zM170.666667 426.666667v213.333333a42.666667 42.666667 0 0 1-85.333334 0V384a42.666667 42.666667 0 0 1 42.666667-42.666667h113.066667l201.6-161.28A42.666667 42.666667 0 0 1 512 213.333333v597.333334a42.666667 42.666667 0 0 1-69.333333 33.28l-213.333334-170.666667a42.666667 42.666667 0 1 1 53.333334-66.56L426.666667 721.92V302.08l-144 115.2A42.666667 42.666667 0 0 1 256 426.666667H170.666667z m652.501333 200.832a42.666667 42.666667 0 0 1 60.330667-60.330667l42.666666 42.666667a42.666667 42.666667 0 0 1-60.330666 60.330666l-42.666667-42.666666z" p-id="2991" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//音量小
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 21 32"><path d="M13.728 6.272v19.456q0 0.448-0.352 0.8t-0.8 0.32-0.8-0.32l-5.952-5.952h-4.672q-0.48 0-0.8-0.352t-0.352-0.8v-6.848q0-0.48 0.352-0.8t0.8-0.352h4.672l5.952-5.952q0.32-0.32 0.8-0.32t0.8 0.32 0.352 0.8zM20.576 16q0 1.344-0.768 2.528t-2.016 1.664q-0.16 0.096-0.448 0.096-0.448 0-0.8-0.32t-0.32-0.832q0-0.384 0.192-0.64t0.544-0.448 0.608-0.384 0.512-0.64 0.192-1.024-0.192-1.024-0.512-0.64-0.608-0.384-0.544-0.448-0.192-0.64q0-0.48 0.32-0.832t0.8-0.32q0.288 0 0.448 0.096 1.248 0.48 2.016 1.664t0.768 2.528z"></path></svg>'
-			'<svg t="1579317311223" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3240" width="32" height="32"><path d="M753.365333 270.634667A42.666667 42.666667 0 0 1 813.653333 210.346667c166.613333 166.613333 166.613333 436.778667 0 603.392a42.666667 42.666667 0 0 1-60.330666-60.330667 341.333333 341.333333 0 0 0 0-482.730667z m-120.704 120.704a42.666667 42.666667 0 1 1 60.373334-60.373334 256 256 0 0 1 0 362.069334 42.666667 42.666667 0 0 1-60.373334-60.373334 170.666667 170.666667 0 0 0 0-241.322666zM170.666667 426.666667v213.333333a42.666667 42.666667 0 0 1-85.333334 0V384a42.666667 42.666667 0 0 1 42.666667-42.666667h113.066667l201.6-161.28A42.666667 42.666667 0 0 1 512 213.333333v597.333334a42.666667 42.666667 0 0 1-69.333333 33.28l-213.333334-170.666667a42.666667 42.666667 0 1 1 53.333334-66.56L426.666667 721.92V302.08l-144 115.2A42.666667 42.666667 0 0 1 256 426.666667H170.666667z" p-id="3241" fill="#dddddd"></path></svg>'
+			'<svg t="1579317311223" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3240" width="32" height="32"><path d="M753.365333 270.634667A42.666667 42.666667 0 0 1 813.653333 210.346667c166.613333 166.613333 166.613333 436.778667 0 603.392a42.666667 42.666667 0 0 1-60.330666-60.330667 341.333333 341.333333 0 0 0 0-482.730667z m-120.704 120.704a42.666667 42.666667 0 1 1 60.373334-60.373334 256 256 0 0 1 0 362.069334 42.666667 42.666667 0 0 1-60.373334-60.373334 170.666667 170.666667 0 0 0 0-241.322666zM170.666667 426.666667v213.333333a42.666667 42.666667 0 0 1-85.333334 0V384a42.666667 42.666667 0 0 1 42.666667-42.666667h113.066667l201.6-161.28A42.666667 42.666667 0 0 1 512 213.333333v597.333334a42.666667 42.666667 0 0 1-69.333333 33.28l-213.333334-170.666667a42.666667 42.666667 0 1 1 53.333334-66.56L426.666667 721.92V302.08l-144 115.2A42.666667 42.666667 0 0 1 256 426.666667H170.666667z" p-id="3241" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//音量大
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 21 32"><path d="	6.272v19.456q0 0.448-0.352 0.8t-0.8 0.32-0.8-0.32l-5.952-5.952h-4.672q-0.48 0-0.8-0.352t-0.352-0.8v-6.848q0-0.48 0.352-0.8t0.8-0.352h4.672l5.952-5.952q0.32-0.32 0.8-0.32t0.8 0.32 0.352 0.8zM20.576 16q0 1.344-0.768 2.528t-2.016 1.664q-0.16 0.096-0.448 0.096-0.448 0-0.8-0.32t-0.32-0.832q0-0.384 0.192-0.64t0.544-0.448 0.608-0.384 0.512-0.64 0.192-1.024-0.192-1.024-0.512-0.64-0.608-0.384-0.544-0.448-0.192-0.64q0-0.48 0.32-0.832t0.8-0.32q0.288 0 0.448 0.096 1.248 0.48 2.016 1.664t0.768 2.528zM25.152 16q0 2.72-1.536 5.056t-4 3.36q-0.256 0.096-0.448 0.096-0.48 0-0.832-0.352t-0.32-0.8q0-0.704 0.672-1.056 1.024-0.512 1.376-0.8 1.312-0.96 2.048-2.4t0.736-3.104-0.736-3.104-2.048-2.4q-0.352-0.288-1.376-0.8-0.672-0.352-0.672-1.056 0-0.448 0.32-0.8t0.8-0.352q0.224 0 0.48 0.096 2.496 1.056 4 3.36t1.536 5.056z"></path></svg>'
-			//'<svg t="1579289568159" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1393" width="32" height="32"><path d="M598.8352 844.5952c-4.096 0-8.192-0.8192-11.8784-2.4576l-219.3408-92.7744a72.0896 72.0896 0 0 0-27.8528-5.7344h-75.1616c-37.4784 0-67.9936-30.5152-67.9936-67.9936V346.5216c0-37.4784 30.5152-67.9936 67.9936-67.9936h75.1616c9.6256 0 19.0464-1.8432 27.8528-5.7344l205.4144-86.8352c26.8288-11.264 56.32-7.5776 77.2096 9.6256 15.36 12.9024 24.1664 30.9248 24.1664 49.9712v531.0464c-0.2048 37.4784-33.9968 67.9936-75.5712 67.9936zM264.6016 339.968c-3.4816 0-6.5536 2.8672-6.5536 6.5536v329.1136c0 3.4816 2.8672 6.5536 6.5536 6.5536h75.1616c18.0224 0 35.4304 3.4816 52.0192 10.4448l212.1728 89.9072c5.9392-1.2288 9.0112-4.7104 9.0112-5.9392V245.5552c0-0.4096-0.6144-1.4336-2.048-2.6624-2.8672-2.4576-8.8064-2.4576-13.9264-0.4096l-205.2096 86.8352c-16.384 6.9632-33.9968 10.4448-51.8144 10.4448h-75.3664z" fill="#dddddd" p-id="1394"></path><path d="M738.304 724.5824a26.5216 26.5216 0 0 1-18.0224-46.08c32.768-30.5152 54.0672-95.8464 54.0672-166.5024s-21.2992-135.7824-54.0672-166.5024c-10.8544-10.0352-11.264-26.8288-1.4336-37.6832 10.0352-10.8544 26.8288-11.264 37.6832-1.4336 43.8272 40.7552 71.0656 119.3984 71.0656 205.4144 0 85.8112-27.2384 164.6592-71.0656 205.4144-5.3248 4.9152-11.8784 7.3728-18.2272 7.3728z" fill="#dddddd" p-id="1395"></path></svg>'
-			'<svg t="1579317311223" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3240" width="32" height="32"><path d="M753.365333 270.634667A42.666667 42.666667 0 0 1 813.653333 210.346667c166.613333 166.613333 166.613333 436.778667 0 603.392a42.666667 42.666667 0 0 1-60.330666-60.330667 341.333333 341.333333 0 0 0 0-482.730667z m-120.704 120.704a42.666667 42.666667 0 1 1 60.373334-60.373334 256 256 0 0 1 0 362.069334 42.666667 42.666667 0 0 1-60.373334-60.373334 170.666667 170.666667 0 0 0 0-241.322666zM170.666667 426.666667v213.333333a42.666667 42.666667 0 0 1-85.333334 0V384a42.666667 42.666667 0 0 1 42.666667-42.666667h113.066667l201.6-161.28A42.666667 42.666667 0 0 1 512 213.333333v597.333334a42.666667 42.666667 0 0 1-69.333333 33.28l-213.333334-170.666667a42.666667 42.666667 0 1 1 53.333334-66.56L426.666667 721.92V302.08l-144 115.2A42.666667 42.666667 0 0 1 256 426.666667H170.666667z" p-id="3241" fill="#dddddd"></path></svg>'
+			'<svg t="1579317311223" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3240" width="32" height="32"><path d="M753.365333 270.634667A42.666667 42.666667 0 0 1 813.653333 210.346667c166.613333 166.613333 166.613333 436.778667 0 603.392a42.666667 42.666667 0 0 1-60.330666-60.330667 341.333333 341.333333 0 0 0 0-482.730667z m-120.704 120.704a42.666667 42.666667 0 1 1 60.373334-60.373334 256 256 0 0 1 0 362.069334 42.666667 42.666667 0 0 1-60.373334-60.373334 170.666667 170.666667 0 0 0 0-241.322666zM170.666667 426.666667v213.333333a42.666667 42.666667 0 0 1-85.333334 0V384a42.666667 42.666667 0 0 1 42.666667-42.666667h113.066667l201.6-161.28A42.666667 42.666667 0 0 1 512 213.333333v597.333334a42.666667 42.666667 0 0 1-69.333333 33.28l-213.333334-170.666667a42.666667 42.666667 0 1 1 53.333334-66.56L426.666667 721.92V302.08l-144 115.2A42.666667 42.666667 0 0 1 256 426.666667H170.666667z" p-id="3241" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//暂停
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 17 32"><path d="M14.080 4.8q2.88 0 2.88 2.048v18.24q0 2.112-2.88 2.112t-2.88-2.112v-18.24q0-2.048 2.88-2.048zM2.88 4.8q2.88 0 2.88 2.048v18.24q0 2.112-2.88 2.112t-2.88-2.112v-18.24q0-2.048 2.88-2.048z"></path></svg>'
-			//'<svg t="1579290353629" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1408" width="32" height="32"><path d="M1023.79 512c0 282.706-229.186 511.898-511.898 511.898C229.182 1023.892 0 794.706 0 512 0 229.289 229.181 0.108 511.892 0.108 794.604 0.108 1023.79 229.289 1023.79 512zM433.92 340.48c0-25.452-20.628-46.08-46.08-46.08-25.452 0-46.08 20.628-46.08 46.08v343.04c0 25.452 20.628 46.08 46.08 46.08 25.452 0 46.08-20.628 46.08-46.08V340.48z m247.68 0c0-25.452-20.628-46.08-46.08-46.08-25.452 0-46.08 20.628-46.08 46.08v343.045c0 25.452 20.628 46.08 46.08 46.08 25.452 0 46.08-20.628 46.08-46.08V340.48z" fill="#dddddd" p-id="1409"></path></svg>'
-			'<svg t="1579292078184" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1950" width="32" height="32"><path d="M121.3 680.4m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#dddddd" p-id="1951"></path><path d="M266.5 855.6m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#dddddd" p-id="1952"></path><path d="M512 35.6C252.8 35.6 42.6 245.7 42.6 505c0 69 14.9 134.6 41.7 193.6l74.2-35.4c-21.7-48.3-33.7-101.8-33.7-158.2 0-213.8 173.3-387.2 387.2-387.2S899.2 291.1 899.2 505 725.8 892.1 512 892.1c-81.9 0-157.9-25.4-220.4-68.8l-51.2 57.2c1.5 0.7 2.5 2.1 2.5 3.6s0.3 3.2-1.2 3.9c76.7 54.5 169.2 86.2 270.4 86.2 259.2 0 469.4-210.1 469.4-469.4S771.2 35.6 512 35.6z" fill="#dddddd" p-id="1953"></path><path d="M419.9 329.1c22.6 0 41 18.3 41 41v261.7c0 22.6-18.3 41-41 41-22.6 0-41-18.3-41-41V370.1c0-22.6 18.4-41 41-41zM610.9 329.1c22.6 0 41 18.3 41 41v261.7c0 22.6-18.3 41-41 41-22.6 0-41-18.3-41-41V370.1c0-22.6 18.4-41 41-41z" fill="#dddddd" p-id="1954"></path></svg>'
+			'<svg t="1579292078184" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1950" width="32" height="32"><path d="M121.3 680.4m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#eeeeee" p-id="1951"></path><path d="M266.5 855.6m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#eeeeee" p-id="1952"></path><path d="M512 35.6C252.8 35.6 42.6 245.7 42.6 505c0 69 14.9 134.6 41.7 193.6l74.2-35.4c-21.7-48.3-33.7-101.8-33.7-158.2 0-213.8 173.3-387.2 387.2-387.2S899.2 291.1 899.2 505 725.8 892.1 512 892.1c-81.9 0-157.9-25.4-220.4-68.8l-51.2 57.2c1.5 0.7 2.5 2.1 2.5 3.6s0.3 3.2-1.2 3.9c76.7 54.5 169.2 86.2 270.4 86.2 259.2 0 469.4-210.1 469.4-469.4S771.2 35.6 512 35.6z" fill="#eeeeee" p-id="1953"></path><path d="M419.9 329.1c22.6 0 41 18.3 41 41v261.7c0 22.6-18.3 41-41 41-22.6 0-41-18.3-41-41V370.1c0-22.6 18.4-41 41-41zM610.9 329.1c22.6 0 41 18.3 41 41v261.7c0 22.6-18.3 41-41 41-22.6 0-41-18.3-41-41V370.1c0-22.6 18.4-41 41-41z" fill="#eeeeee" p-id="1954"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			//播放
-			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 32"><path d="M15.552 15.168q0.448 0.32 0.448 0.832 0 0.448-0.448 0.768l-13.696 8.512q-0.768 0.512-1.312 0.192t-0.544-1.28v-16.448q0-0.96 0.544-1.28t1.312 0.192z"></path></svg>'
-			//'<svg t="1579290324785" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1193" width="32" height="32"><path d="M511.996 1.28C229.933 1.28 1.276 229.937 1.276 512s228.657 510.72 510.72 510.72c282.07 0 510.72-228.657 510.72-510.72 0.004-282.067-228.65-510.72-510.72-510.72z m249.46 520.727c-25.906 15.157-329.382 192.31-344.566 201.08-18.953 10.96-38.122-2.982-38.122-21.717V298.4c0-20.641 21.186-30.664 37.342-21.583 22.07 12.371 326.692 190.424 345.345 201.534 16.733 9.969 17.006 33.703 0 43.656z" fill="#dddddd" p-id="1194"></path></svg>'
-			'<svg t="1579292032788" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1711" width="32" height="32"><path d="M121.3 676.4m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#dddddd" p-id="1712"></path><path d="M266.5 851.6m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#dddddd" p-id="1713"></path><path d="M512 31.6C252.8 31.6 42.6 241.7 42.6 501c0 69 14.9 134.6 41.7 193.6l74.2-35.4c-21.7-48.3-33.7-101.8-33.7-158.2 0-213.8 173.3-387.2 387.2-387.2S899.2 287.1 899.2 501 725.8 888.1 512 888.1c-81.9 0-157.9-25.4-220.4-68.8l-51.2 57.2c1.5 0.7 2.5 2.1 2.5 3.6s0.3 3.2-1.2 3.9c76.7 54.5 169.2 86.2 270.4 86.2 259.2 0 469.4-210.1 469.4-469.4S771.2 31.6 512 31.6z" fill="#dddddd" p-id="1714"></path><path d="M379.9 348.8c11.3-19.6 36.4-26.3 55.9-15l226.6 130.9c19.6 11.3 26.3 36.4 15 55.9-11.3 19.6-36.4 26.3-55.9 15L394.9 404.7c-19.6-11.3-26.3-36.3-15-55.9z" fill="#dddddd" p-id="1715"></path><path d="M416.2 328.3c22.6 0 41 18.3 41 41V631c0 22.6-18.3 41-41 41-22.6 0-41-18.3-41-41V369.2c0-22.6 18.4-40.9 41-40.9z" fill="#dddddd" p-id="1716"></path><path d="M677.5 478.6c11.5 19.5 5.1 44.6-14.4 56.1L437.8 667.9c-19.5 11.5-44.6 5.1-56.1-14.4s-5.1-44.6 14.4-56.1l225.3-133.2c19.5-11.5 44.6-5 56.1 14.4z" fill="#dddddd" p-id="1717"></path></svg>'
+			'<svg t="1579292032788" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1711" width="32" height="32"><path d="M121.3 676.4m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#eeeeee" p-id="1712"></path><path d="M266.5 851.6m-40.9 0a40.9 40.9 0 1 0 81.8 0 40.9 40.9 0 1 0-81.8 0Z" fill="#eeeeee" p-id="1713"></path><path d="M512 31.6C252.8 31.6 42.6 241.7 42.6 501c0 69 14.9 134.6 41.7 193.6l74.2-35.4c-21.7-48.3-33.7-101.8-33.7-158.2 0-213.8 173.3-387.2 387.2-387.2S899.2 287.1 899.2 501 725.8 888.1 512 888.1c-81.9 0-157.9-25.4-220.4-68.8l-51.2 57.2c1.5 0.7 2.5 2.1 2.5 3.6s0.3 3.2-1.2 3.9c76.7 54.5 169.2 86.2 270.4 86.2 259.2 0 469.4-210.1 469.4-469.4S771.2 31.6 512 31.6z" fill="#eeeeee" p-id="1714"></path><path d="M379.9 348.8c11.3-19.6 36.4-26.3 55.9-15l226.6 130.9c19.6 11.3 26.3 36.4 15 55.9-11.3 19.6-36.4 26.3-55.9 15L394.9 404.7c-19.6-11.3-26.3-36.3-15-55.9z" fill="#eeeeee" p-id="1715"></path><path d="M416.2 328.3c22.6 0 41 18.3 41 41V631c0 22.6-18.3 41-41 41-22.6 0-41-18.3-41-41V369.2c0-22.6 18.4-40.9 41-40.9z" fill="#eeeeee" p-id="1716"></path><path d="M677.5 478.6c11.5 19.5 5.1 44.6-14.4 56.1L437.8 667.9c-19.5 11.5-44.6 5.1-56.1-14.4s-5.1-44.6 14.4-56.1l225.3-133.2c19.5-11.5 44.6-5 56.1 14.4z" fill="#eeeeee" p-id="1717"></path></svg>'
 	}, function(e, t, n) {
 		"use strict";
 		Object.defineProperty(t, "__esModule", {
@@ -2291,7 +2273,7 @@
 				"Input danmaku, hit Enter": "输入弹幕，回车发送",
 				"About us": "关于我们",
 				"DPlayer feedback": "播放器意见反馈",
-				"About DPlayer": "关于HopucPlayer播放器",
+				"About DPlayer": "关于Hopuc Player播放器",
 				Loop: "循环",
 				Speed: "倍速",
 				"Opacity for danmaku": "弹幕透明度",
@@ -2330,7 +2312,7 @@
 				"Input danmaku, hit Enter": "輸入彈幕，Enter 發送",
 				"About us": "關於我們",
 				"DPlayer feedback": "播放器意見回饋",
-				"About DPlayer": "關於HopucPlayer播放器",
+				"About DPlayer": "關於Hopuc Player播放器",
 				Loop: "循環播放",
 				Speed: "速度",
 				"Opacity for danmaku": "彈幕透明度",
@@ -2719,7 +2701,8 @@
 				container: e.element || document.getElementsByClassName("dplayer")[0],
 				live: !1,
 				autoplay: !1,
-				theme: "#b7daff",
+				title: "",
+				theme: "#7777cc",
 				loop: !1,
 				lang: (navigator.language || navigator.browserLanguage).toLowerCase(),
 				screenshot: !1,
@@ -2733,7 +2716,7 @@
 			};
 			for (var n in t) t.hasOwnProperty(n) && !e.hasOwnProperty(n) && (e[n] = t[n]);
 			return e.video && !e.video.type && (e.video.type = "auto"), "object" === a(e.danmaku) && e.danmaku && !e.danmaku
-				.user && (e.danmaku.user = "DIYgod"), e.subtitle && (!e.subtitle.type && (e.subtitle.type = "webvtt"), !e.subtitle
+				.user && (e.danmaku.user = "Hopuc"), e.subtitle && (!e.subtitle.type && (e.subtitle.type = "webvtt"), !e.subtitle
 					.fontSize && (e.subtitle.fontSize = "20px"), !e.subtitle.bottom && (e.subtitle.bottom = "40px"), !e.subtitle.color &&
 					(e.subtitle.color = "#fff")), e.video.quality && (e.video.url = e.video.quality[e.video.defaultQuality].url),
 				e.lang && (e.lang = e.lang.toLowerCase()), e.contextmenu = e.contextmenu.concat([{
@@ -2745,7 +2728,7 @@
 					text: "About us",
 					link: "https://hopuc.com"
 				}, {
-					text: "HopucPlayer",
+					text: "Hopuc Player",
 					link: "https://v.hopuc.com"
 				}]), e
 		}
@@ -3075,9 +3058,7 @@
 							options: this.options,
 							index: E,
 							tran: this.tran
-						}), this.video = this.template.video, this.bar = new y.default(this.template), this.bezel = new v.default(
-							this.template.bezel), this.fullScreen = new p.default(this), this.controller = new g.default(this), this.options
-						.danmaku && (this.danmaku = new u.default({
+						}), this.video = this.template.video, this.bar = new y.default(this.template), this.bezel = new v.default(this.template.bezel), this.fullScreen = new p.default(this), this.controller = new g.default(this), this.options.danmaku && (this.danmaku = new u.default({
 							container: this.template.danmaku,
 							opacity: this.user.get("opacity"),
 							callback: function() {
@@ -3107,9 +3088,7 @@
 							tran: function(e) {
 								return n.tran(e)
 							}
-						}), this.comment = new w.default(this)), this.setting = new b.default(this), document.addEventListener(
-							"click",
-							function() {
+						}), this.comment = new w.default(this)), this.setting = new b.default(this), document.addEventListener("click",function() {
 								n.focus = !1
 							}, !0), this.container.addEventListener("click", function() {
 							n.focus = !0
@@ -3120,47 +3099,36 @@
 				return i(e, [{
 					key: "seek",
 					value: function(e) {
-						e = Math.max(e, 0), this.video.duration && (e = Math.min(e, this.video.duration)), this.video.currentTime <
-							e ? this.notice(this.tran("FF") + " " + (e - this.video.currentTime).toFixed(0) + " " + this.tran("s")) :
-							this.video.currentTime > e && this.notice(this.tran("REW") + " " + (this.video.currentTime - e).toFixed(
-								0) + " " + this.tran("s")), this.video.currentTime = e, this.danmaku && this.danmaku.seek(), this.bar.set(
-								"played", e / this.video.duration, "width"), this.template.ptime.innerHTML = o.default.secondToTime(e)
+						e = Math.max(e, 0), this.video.duration && (e = Math.min(e, this.video.duration)), this.video.currentTime <e ? this.notice(this.tran("FF") + " " + (e - this.video.currentTime).toFixed(0) + " " + this.tran("s")) :this.video.currentTime > e && this.notice(this.tran("REW") + " " + (this.video.currentTime - e).toFixed(0) + " " + this.tran("s")), this.video.currentTime = e, this.danmaku && this.danmaku.seek(), this.bar.set("played", e / this.video.duration, "width"), this.template.ptime.innerHTML = o.default.secondToTime(e)
 					}
 				}, {
 					key: "play",
 					value: function() {
 						var e = this;
-						if (this.paused = !1, this.video.paused && this.bezel.switch(c.default.play), this.template.playButton.innerHTML =
-							c.default.pause, a.default.resolve(this.video.play()).catch(function() {
-								e.pause()
-							}).then(function() {}), this.timer.enable("loading"), this.container.classList.remove("dplayer-paused"),
-							this.container.classList.add("dplayer-playing"), this.danmaku && this.danmaku.play(), this.options.mutex
-						)
-							for (var t = 0; t < M.length; t++) this !== M[t] && M[t].pause()
+						if (this.paused = !1, this.video.paused && this.bezel.switch(c.default.play), this.template.playButton.innerHTML =c.default.pause, a.default.resolve(this.video.play()).catch(function() {e.pause()}).then(function() {}), this.timer.enable("loading"), this.container.classList.remove("dplayer-paused"),this.container.classList.add("dplayer-playing"), this.danmaku && this.danmaku.play(), this.options.mutex)for (var t = 0; t < M.length; t++) this !== M[t] && M[t].pause()
 					}
 				}, {
 					key: "pause",
 					value: function() {
-						this.paused = !0, this.container.classList.remove("dplayer-loading"), this.video.paused || this.bezel.switch(
-							c.default.pause), this.template.playButton.innerHTML = c.default.play, this.video.pause(), this.timer.disable(
-							"loading"), this.container.classList.remove("dplayer-playing"), this.container.classList.add(
-							"dplayer-paused"), this.danmaku && this.danmaku.pause()
+						this.paused = !0, this.container.classList.remove("dplayer-loading"), this.video.paused || this.bezel.switch(c.default.pause), this.template.playButton.innerHTML = c.default.play, this.video.pause(), this.timer.disable("loading"), this.container.classList.remove("dplayer-playing"), this.container.classList.add("dplayer-paused"), this.danmaku && this.danmaku.pause()/* ,setTimeout(()=>{
+							this.bezel.switch(c.default.play);
+							console.log("ssss")
+						} ,1000); */
 					}
 				}, {
 					key: "switchVolumeIcon",
 					value: function() {
-						this.volume() >= .95 ? this.template.volumeIcon.innerHTML = c.default.volumeUp : this.volume() > 0 ? this
-							.template.volumeIcon.innerHTML = c.default.volumeDown : this.template.volumeIcon.innerHTML = c.default.volumeOff
+						this.volume() >= .95 ? this.template.volumeIcon.innerHTML = c.default.volumeUp : this.volume() > 0 ? this.template.volumeIcon.innerHTML = c.default.volumeDown : this.template.volumeIcon.innerHTML = c.default.volumeOff
 					}
 				}, {
 					key: "volume",
 					value: function(e, t, n) {
 						if (e = parseFloat(e), !isNaN(e)) {
-							e = Math.max(e, 0), e = Math.min(e, 1), this.bar.set("volume", e, "width");
+							e = Math.max(e, 0), e = Math.min(e, 1), this.bar.set("volume", e, "height");
 							var i = (100 * e).toFixed(0) + "%";
 							this.template.volumeBarWrapWrap.dataset.balloon = i, t || this.user.set("volume", e),
-								/* n || this.notice(
-																this.tran("Volume") + " " + (100 * e).toFixed(0) + "%") ,*/
+								n || this.notice(
+									this.tran("Volume") + " " + (100 * e).toFixed(0) + "%"),
 								this.video.volume = e, this.video.muted && (
 									this.video.muted = !1), this.switchVolumeIcon()
 							//修改音量提示
@@ -3180,10 +3148,7 @@
 				}, {
 					key: "switchVideo",
 					value: function(e, t) {
-						this.pause(), this.video.poster = e.pic ? e.pic : "", this.video.src = e.url, this.initMSE(this.video, e.type ||
-							"auto"), t && (this.template.danmakuLoading.style.display = "block", this.bar.set("played", 0, "width"),
-							this.bar.set("loaded", 0, "width"), this.template.ptime.innerHTML = "00:00", this.template.danmaku.innerHTML =
-							"", this.danmaku && this.danmaku.reload({
+						this.pause(), this.video.poster = e.pic ? e.pic : "", this.video.src = e.url, this.initMSE(this.video, e.type ||"auto"), t && (this.template.danmakuLoading.style.display = "block", this.bar.set("played", 0, "width"),this.bar.set("loaded", 0, "width"), this.template.ptime.innerHTML = "00:00", console.log("dddd"),this.template.danmaku.innerHTML ="", this.danmaku && this.danmaku.reload({
 								id: t.id,
 								address: t.api,
 								token: t.token,
@@ -3196,13 +3161,8 @@
 					key: "initMSE",
 					value: function(e, t) {
 						var n = this;
-						if (this.type = t, this.options.video.customType && this.options.video.customType[t]) "[object Function]" ===
-							Object.prototype.toString.call(this.options.video.customType[t]) ? this.options.video.customType[t](this
-								.video, this) : console.error("Illegal customType: " + t);
-						else switch ("auto" === this.type && (/m3u8(#|\?|$)/i.exec(e.src) ? this.type = "hls" : /.flv(#|\?|$)/i.exec(
-								e.src) ? this.type = "flv" : /.mpd(#|\?|$)/i.exec(e.src) ? this.type = "dash" : this.type = "normal"),
-							"hls" === this.type && (e.canPlayType("application/x-mpegURL") || e.canPlayType(
-								"application/vnd.apple.mpegURL")) && (this.type = "normal"), this.type) {
+						if (this.type = t, this.options.video.customType && this.options.video.customType[t]) "[object Function]" === Object.prototype.toString.call(this.options.video.customType[t]) ? this.options.video.customType[t](this.video, this) : console.error("Illegal customType: " + t);
+						else switch ("auto" === this.type && (/m3u8(#|\?|$)/i.exec(e.src) ? this.type = "hls" : /.flv(#|\?|$)/i.exec(e.src) ? this.type = "flv" : /.mpd(#|\?|$)/i.exec(e.src) ? this.type = "dash" : this.type = "normal"),"hls" === this.type && (e.canPlayType("application/x-mpegURL") || e.canPlayType("application/vnd.apple.mpegURL")) && (this.type = "normal"), this.type) {
 							case "hls":
 								if (Hls)
 									if (Hls.isSupported()) {
@@ -3340,7 +3300,7 @@
 				}], [{
 					key: "version",
 					get: function() {
-						return "1.0.3"
+						return "1.0.4"
 					}
 				}]), e
 			}();
@@ -3354,36 +3314,63 @@
 			o = (i = a) && i.__esModule ? i : {
 				default: i
 			};
-		console.log("%c HopucPlayer v1.0.3-20200215 %c https://hopuc.com",
+		console.log("%c Hopuc Player v1.0.4-20200217 %c https://hopuc.com",
 			"color: #77c; background: #ddd; padding:5px 0;border-radius:3px", "color: #77c;"), t.default = o.default
 	}]).default
 });
 
 function pip() {
 	var btn = document.getElementById('pip-btn');
-	var video = document.getElementById('video');
+	// var video = document.getElementById('video');
+	//var video = dp.video;
 	var svg = document.getElementById('pip-svg');
 	//var pip = document.getElementsByClassName('dplayer-pip');
-		//console.log('切换画中画模式');
-		// 禁用按钮，防止二次点击
-		this.disabled = true;
-		try {
-			if (video !== document.pictureInPictureElement) {
-				// 尝试进入画中画模式
-				video.requestPictureInPicture();
-				svg.innerHTML =
-					'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
-			} else {
-				// 退出画中画
-				document.exitPictureInPicture();
-				svg.innerHTML =
-					'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
-			}
-		} catch (error) {
-			console.log('PictureInPicture:' + error);
-		} finally {
-			this.disabled = false;
+	//console.log('切换画中画模式');
+	// 禁用按钮，防止二次点击
+	this.disabled = true;
+	try {
+		if (dp.video !== document.pictureInPictureElement) {
+			// 尝试进入画中画模式
+			dp.video.requestPictureInPicture();
+		} else {
+			// 退出画中画
+			document.exitPictureInPicture();
 		}
+		
+		dp.video.addEventListener('enterpictureinpicture', function() {
+		  // 已进入画中画模式
+		  svg.innerHTML =
+		  	'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
+		});
+		
+		dp.video.addEventListener('leavepictureinpicture', function() {
+		  // 已退出画中画模式
+		  svg.innerHTML =
+		  	'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
+		});
+		
+	} catch (error) {
+		console.log('PictureInPicture:' + error);
+		dp.notice('Picture In Picture')
+	} finally {
+		this.disabled = false;
+	}
 }
+
+
+document.onkeydown = function(e) {
+	//e.preventDefault();
+	var e = e.which||e.keyCode;
+	if (e == 70) {
+		document.querySelector('.dplayer-full-icon').click();
+	}
+	if (e == 77) {
+		document.querySelector('.dplayer-volume-icon').click();
+	}
+	if (e == 80) {
+		document.querySelector('#pip-btn').click();
+	}
+	//console.log(e.which)
+};
 
 //# sourceMappingURL=player.min.js.map
