@@ -1,6 +1,5 @@
 ! function(e, t) {
-	"object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define
-		.amd ? define("DPlayer", [], t) : "object" == typeof exports ? exports.DPlayer = t() : e.DPlayer = t()
+	"object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define("DPlayer", [], t) : "object" == typeof exports ? exports.DPlayer = t() : e.DPlayer = t()
 }(window, function() {
 	return function(e) {
 		var t = {};
@@ -315,10 +314,7 @@
 			var s, l = {
 				adapter: ("undefined" != typeof XMLHttpRequest ? s = n(10) : void 0 !== t && (s = n(10)), s),
 				transformRequest: [function(e, t) {
-					return a(t, "Content-Type"), i.isFormData(e) || i.isArrayBuffer(e) || i.isBuffer(e) || i.isStream(e) || i.isFile(
-						e) || i.isBlob(e) ? e : i.isArrayBufferView(e) ? e.buffer : i.isURLSearchParams(e) ? (r(t,
-						"application/x-www-form-urlencoded;charset=utf-8"), e.toString()) : i.isObject(e) ? (r(t,
-						"application/json;charset=utf-8"), JSON.stringify(e)) : e
+					return a(t, "Content-Type"), i.isFormData(e) || i.isArrayBuffer(e) || i.isBuffer(e) || i.isStream(e) || i.isFile(e) || i.isBlob(e) ? e : i.isArrayBufferView(e) ? e.buffer : i.isURLSearchParams(e) ? (r(t,"application/x-www-form-urlencoded;charset=utf-8"), e.toString()) : i.isObject(e) ? (r(t,"application/json;charset=utf-8"), JSON.stringify(e)) : e
 				}],
 				transformResponse: [function(e) {
 					if ("string" == typeof e) try {
@@ -375,7 +371,7 @@
 				c = e.preload,
 				u = e.url;
 			n = a && "webvtt" === a.type;
-			return t += '\n<video\n  id="video"  class="dplayer-video ', o && (t += "dplayer-video-current"), t +=
+			return t += '\n<video\n id="video" class="dplayer-video ', o && (t += "dplayer-video-current"), t +=
 				'"\nwebkit-playsinline\nplaysinline\n', r && (t += 'poster="', t += s(r), t += '"'), t += "\n",
 				(l || n) && (t += 'crossorigin="anonymous"'), t += "\n", c && (t += 'preload="', t += s(c), t += '"'), t +=
 				"\n", u && (t += 'src="', t += s(u), t += '"'), t += "\n>\n", n && (t +=
@@ -615,7 +611,7 @@
 			}, {
 				key: "update",
 				value: function() {
-					this.template.infoVersion.innerHTML = "Hopuc Player v1.0.4-20200217", this.template.infoType.innerHTML = this.player
+					this.template.infoVersion.innerHTML = "Hopuc Player v1.0.5-20200308", this.template.infoType.innerHTML = this.player
 						.type,
 						this.template.infoUrl.innerHTML = this.player.options.video.url, this.template.infoResolution.innerHTML =
 						this.player.video.videoWidth + " x " + this.player.video.videoHeight, this.template.infoDuration.innerHTML =
@@ -675,19 +671,15 @@
 				value: function(e, t) {
 					this.player.template.menu.classList.add("dplayer-menu-show");
 					var n = this.player.container.getBoundingClientRect();
-					e + this.player.template.menu.offsetWidth >= n.width ? (this.player.template.menu.style.right = n.width -
-							e + "px", this.player.template.menu.style.left = "initial") : (this.player.template.menu.style.left = e +
-							"px", this.player.template.menu.style.right = "initial"), t + this.player.template.menu.offsetHeight >=
+					e + this.player.template.menu.offsetWidth >= n.width ? (this.player.template.menu.style.right = n.width - e + "px", this.player.template.menu.style.left = "initial") : (this.player.template.menu.style.left = e + "px", this.player.template.menu.style.right = "initial"), t + this.player.template.menu.offsetHeight >=
 						n.height ? (this.player.template.menu.style.bottom = n.height - t + "px", this.player.template.menu.style
 							.top = "initial") : (this.player.template.menu.style.top = t + "px", this.player.template.menu.style.bottom =
-							"initial"), this.player.template.mask.classList.add("dplayer-mask-show"), this.shown = !0, this.player.events
-						.trigger("contextmenu_show")
+							"initial"), this.player.template.mask.classList.add("dplayer-mask-show"), this.shown = !0, this.player.events.trigger("contextmenu_show")
 				}
 			}, {
 				key: "hide",
 				value: function() {
-					this.player.template.mask.classList.remove("dplayer-mask-show"), this.player.template.menu.classList.remove(
-						"dplayer-menu-show"), this.shown = !1, this.player.events.trigger("contextmenu_hide")
+					this.player.template.mask.classList.remove("dplayer-mask-show"), this.player.template.menu.classList.remove("dplayer-menu-show"), this.shown = !1, this.player.events.trigger("contextmenu_hide")
 				}
 			}]), e
 		}();
@@ -885,8 +877,7 @@
 					}), this.player.danmaku.opacity(this.player.user.get("opacity"));
 					var o = function(e) {
 							var t = e || window.event,
-								i = ((t.clientX || t.changedTouches[0].clientX) - r.default.getBoundingClientRectViewLeft(n.player.template
-									.danmakuOpacityBarWrap)) / 130;
+								i = ((t.clientX || t.changedTouches[0].clientX) - r.default.getBoundingClientRectViewLeft(n.player.template.danmakuOpacityBarWrap)) / 87;
 							i = Math.max(i, 0), i = Math.min(i, 1), n.player.danmaku.opacity(i)
 						},
 						s = function e() {
@@ -895,8 +886,7 @@
 						};
 					this.player.template.danmakuOpacityBarWrapWrap.addEventListener("click", function(e) {
 						var t = e || window.event,
-							i = ((t.clientX || t.changedTouches[0].clientX) - r.default.getBoundingClientRectViewLeft(n.player.template
-								.danmakuOpacityBarWrap)) / 130;
+							i = ((t.clientX || t.changedTouches[0].clientX) - r.default.getBoundingClientRectViewLeft(n.player.template.danmakuOpacityBarWrap)) / 87;
 						i = Math.max(i, 0), i = Math.min(i, 1), n.player.danmaku.opacity(i)
 					}), this.player.template.danmakuOpacityBarWrapWrap.addEventListener(r.default.nameMap.dragStart, function() {
 						document.addEventListener(r.default.nameMap.dragMove, o), document.addEventListener(r.default.nameMap.dragEnd,
@@ -1100,11 +1090,9 @@
 					}), this.player.template.playedBarWrap.addEventListener(a.default.nameMap.dragEnd, function() {
 						a.default.isMobile && e.thumbnails && e.thumbnails.hide()
 					}), a.default.isMobile || (this.player.template.playedBarWrap.addEventListener("mouseenter", function() {
-						e.player.video.duration && (e.thumbnails && e.thumbnails.show(), e.player.template.playedBarTime.classList
-							.remove("hidden"))
+						e.player.video.duration && (e.thumbnails && e.thumbnails.show(), e.player.template.playedBarTime.classList.remove("hidden"))
 					}), this.player.template.playedBarWrap.addEventListener("mouseleave", function() {
-						e.player.video.duration && (e.thumbnails && e.thumbnails.hide(), e.player.template.playedBarTime.classList
-							.add("hidden"))
+						e.player.video.duration && (e.thumbnails && e.thumbnails.hide(), e.player.template.playedBarTime.classList.add("hidden"))
 					}))
 				}
 			}, {
@@ -1124,7 +1112,7 @@
 						t = function(t) {
 							var n = t || window.event,
 								i = ((-n.clientY || -n.changedTouches[0].clientY) + a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap) /* + 5.5 */+40 ) / 35;
-								console.log(a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap));
+								//console.log(a.default.getBoundingClientRectViewTop(e.player.template.volumeBarWrap));
 							e.player.volume(i)
 						},
 						n = function n() {
@@ -1140,7 +1128,7 @@
 						document.addEventListener(a.default.nameMap.dragMove, t), document.addEventListener(a.default.nameMap.dragEnd,
 							n), e.player.template.volumeButton.classList.add("dplayer-volume-active")
 					}), this.player.template.volumeButtonIcon.addEventListener("click", function() {
-						e.player.video.muted ? (e.player.video.muted = !1, e.player.switchVolumeIcon(), e.player.bar.set("volume", e.player.volume()||0.7, "height"),e.player.notice("取消静音")) : (e.player.video.muted = !0, e.player.template.volumeIcon.innerHTML = r.default.volumeOff, e.player.bar.set("volume", 0, "height"),e.player.notice("静音"))
+						e.player.video.muted ? (e.player.video.muted = !1, e.player.switchVolumeIcon(), e.player.bar.set("volume", e.player.volume()||e.player.volume(0.7), "height"),e.player.notice("取消静音")) : (e.player.video.muted = !0, e.player.template.volumeIcon.innerHTML = r.default.volumeOff, e.player.bar.set("volume", 0, "height"),e.player.notice("开启静音"))
 					})
 				}
 			}, {
@@ -1175,11 +1163,9 @@
 				value: function() {
 					var e = this;
 					this.player.options.subtitle && (this.player.events.on("subtitle_show", function() {
-						e.player.template.subtitleButton.dataset.balloon = e.player.tran("Hide subtitle"), e.player.template.subtitleButtonInner
-							.style.opacity = "", e.player.user.set("subtitle", 1)
+						e.player.template.subtitleButton.dataset.balloon = e.player.tran("Hide subtitle"), e.player.template.subtitleButtonInner.style.opacity = "", e.player.user.set("subtitle", 1)
 					}), this.player.events.on("subtitle_hide", function() {
-						e.player.template.subtitleButton.dataset.balloon = e.player.tran("Show subtitle"), e.player.template.subtitleButtonInner
-							.style.opacity = "0.4", e.player.user.set("subtitle", 0)
+						e.player.template.subtitleButton.dataset.balloon = e.player.tran("Show subtitle"), e.player.template.subtitleButtonInner.style.opacity = "0.4", e.player.user.set("subtitle", 0)
 					}), this.player.template.subtitleButton.addEventListener("click", function() {
 						e.player.subtitle.toggle()
 					}))
@@ -1190,7 +1176,7 @@
 					var e = this;
 					this.show(), clearTimeout(this.autoHideTimer), this.autoHideTimer = setTimeout(function() {
 						!e.player.video.played.length || e.player.paused || e.disableAutoHide || e.hide()
-					}, 3e3)
+					}, 1800)
 				}
 			}, {
 				key: "show",
@@ -1689,8 +1675,8 @@
 				value: function() {
 					var e = this,
 						t = void 0;
-					t = this.options.api.maximum ? this.options.api.address + "v3/?id=" + this.options.api.id + "&max=" +
-						this.options.api.maximum : this.options.api.address + "v3/?id=" + this.options.api.id;
+					t = this.options.api.maximum ? this.options.api.address + "?id=" + this.options.api.id + "&max=" +
+						this.options.api.maximum : this.options.api.address + "?id=" + this.options.api.id;
 					var n = (this.options.api.addition || []).slice(0);
 					n.push(t), this.events && this.events.trigger("danmaku_load_start", n), this._readAllEndpoints(n,
 						function(t) {
@@ -1735,7 +1721,7 @@
 							type: e.type
 						};
 					this.options.apiBackend.send({
-						url: this.options.api.address + "v3/",
+						url: this.options.api.address,
 						data: i,
 						success: t,
 						error: function(e) {
@@ -1996,15 +1982,17 @@
 				d = i.$each;
 			e.$value, e.$index;
 			return a += '<div class="dplayer-mask"></div>\n<div class="dplayer-video-wrap">\n', t = n(5)(o), a += t, a +=
-				"\n", r.logo && (a += '\n<div class="dplayer-logo">\n<img src="', a += s(r.logo), a +=
-					'">\n</div>\n<div class="dplayer-title"><span>', a += s(r.title), a +=
-					'</span></div>\n'), a += '\n<div class="dplayer-danmaku"', r.danmaku && r.danmaku.bottm && (a +=
-					' style="margin-bottom:', a += s(r.danmaku.bottm), a += '"'), a +=
+				'\n', r.logo && (a += '\n<div class="dplayer-top"><span class="dplayer-top-title">', a += s(r.title), a +=
+				'</span><span class="dplayer-top-time">', s(r.time), a +=
+				'</span><span class="dplayer-top-logo">\n<img src="', a += s(r.logo), a +=
+				'">\n</span>\n</div>\n<div class="dplayer-logo">\n<img src="', a += s(r.logo), a +=
+				'">\n</div>\n'), a += '\n<div class="dplayer-danmaku"', r.danmaku && r.danmaku.bottm && (a +=
+				' style="margin-bottom:', a += s(r.danmaku.bottm), a += '"'), a +=
 				'>\n<div class="dplayer-danmaku-item dplayer-danmaku-item--demo"></div>\n</div>\n<div class="dplayer-subtitle"></div>\n<div class="dplayer-bezel">\n<span class="dplayer-bezel-icon"></span>\n',
 				r.danmaku && (a += '\n<span class="dplayer-danloading">', a += s(l("Danmaku is loading")), a +=
-					"</span>\n"), a += '\n<span class="diplayer-loading-icon">', a += c.loading, a +=
+				"</span>\n"), a += '\n<span class="diplayer-loading-icon">', a += c.loading, a +=
 				'</span>\n</div>\n</div>\n<div class="dplayer-controller-mask"></div>\n<div class="dplayer-controller">\n<div class="dplayer-icons dplayer-comment-box">\n<button class="dplayer-icon dplayer-comment-setting-icon" data-balloon="',
-				a += s(l("Setting")), a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c
+				a += s(l("Set danmaku")), a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c
 				.pallette, a +=
 				'</span>\n</button>\n<div class="dplayer-comment-setting-box">\n<div class="dplayer-comment-setting-color">\n<div class="dplayer-comment-setting-title">',
 				a += s(l("Set danmaku color")), a +=
@@ -2022,19 +2010,18 @@
 				a += s(u), a +=
 				'" value="#D500F9">\n<span style="background: #D500F9"></span>\n</label>\n</div>\n<div class="dplayer-comment-setting-type">\n<div class="dplayer-comment-setting-title">',
 				a += s(l("Set danmaku type")), a +=
-				'</div>\n<label>\n<input type="radio" name="dplayer-danmaku-type-', a += s(
-					u), a += '" value="1">\n<span>', a += s(l("Top")), a +=
+				'</div>\n<label>\n<input type="radio" name="dplayer-danmaku-type-', a += s(u), a += '" value="1">\n<span>', a += s(l("Top")), a +=
 				'</span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-type-',
 				a += s(u), a += '" value="0" checked>\n<span>', a += s(l("Rolling")), a +=
 				'</span>\n</label>\n<label>\n<input type="radio" name="dplayer-danmaku-type-',
 				a += s(u), a += '" value="2">\n<span>', a += s(l("Bottom")), a +=
 				'</span>\n</label>\n</div>\n</div>\n<input class="dplayer-comment-input" type="text" placeholder="',
 				a += s(l("Input danmaku, hit Enter")), a +=
-				'" maxlength="30">\n<button class="dplayer-icon dplayer-send-icon" data-balloon="', a += s(l("Send")),
+				'" maxlength="30">\n<button class="dplayer-icon dplayer-send-icon" data-balloon="', a += s(l("Send danmaku")),
 				a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.send, a +=
 				'</span>\n</button>\n</div>\n<div class="dplayer-icons dplayer-icons-left">\n<button class="dplayer-icon dplayer-play-icon">\n<span class="dplayer-icon-content">',
 				a += c.play, a +=
-				'</span>\n</button>\n<span class="dplayer-time">\n<span class="dplayer-ptime">0:00</span> /\n<span class="dplayer-dtime">0:00</span>\n</span>\n',
+				'</span>\n</button>\n<span class="dplayer-time">\n<span class="dplayer-ptime">0:00</span> /\n<span class="dplayer-dtime">00:00</span>\n</span>\n',
 				r.live && (a +=
 					'\n<span class="dplayer-live-badge"><span class="dplayer-live-dot" style="background: ', a += s(r.theme),
 					a += ';"></span>', a += s(l("Live")), a += "</span>\n"), a +=
@@ -2047,13 +2034,12 @@
 					s(r.video.quality[r.video.defaultQuality].name), a +=
 					'</button>\n<div class="dplayer-quality-mask">\n<div class="dplayer-quality-list">\n',
 					d(r.video.quality, function(e, t) {
-						a += '\n<div class="dplayer-quality-item" data-index="', a += s(t), a += '">', a += s(e
-							.name), a += "</div>\n"
+						a += '\n<div class="dplayer-quality-item" data-index="', a += s(t), a += '">', a += s(e.name), a += "</div>\n"
 					}), a += "\n</div>\n</div>\n</div>\n"), a += "\n", r.screenshot &&
 				(a += '\n<button class="dplayer-icon dplayer-camera-icon" data-balloon="', a += s(l("Screenshot")), a +=
 					'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.camera, a +=
 					"</span>\n</button>\n"), a +=
-				'\n   \n<div class="dplayer-comment">\n<button class="dplayer-icon dplayer-comment-icon" data-balloon="',
+				'\n \n<div class="dplayer-comment">\n<button class="dplayer-icon dplayer-comment-icon" data-balloon="',
 				a += s(l("Send danmaku")), a +=
 				'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.comment, a +=
 				"</span>\n</button>\n</div>\n", r.subtitle && (a +=
@@ -2061,11 +2047,11 @@
 					a += s(l("Hide subtitle")), a +=
 					'" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a += c.subtitle, a +=
 					"</span>\n</button>\n</div>\n"), a +=
-				'\n <div class="dplayer-pip"><button id="pip-btn" class="dplayer-icon dplayer-pip-icon" data-balloon="画中画" data-balloon-pos="up" onclick="pip()"><span id="pip-svg" class="dplayer-icon-content"><svg t="1580656357666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9888" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="9889" fill="#eeeeee"></path></svg></span></button></div>  \n  <div class="dplayer-setting">\n<button class="dplayer-icon dplayer-setting-icon" data-balloon="',
+				'\n <div class="dplayer-pip"><button id="pip-btn" class="dplayer-icon dplayer-pip-icon" data-balloon="画中画" data-balloon-pos="up" onclick="pip()"><span id="pip-svg" class="dplayer-icon-content"><svg t="1580656357666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9888" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="9889" fill="#eeeeee"></path></svg></span></button></div> \n <div class="dplayer-setting">\n<button class="dplayer-icon dplayer-setting-icon" data-balloon="',
 				a += s(l("Setting")), a += '" data-balloon-pos="up">\n<span class="dplayer-icon-content">', a +=
 				c.setting, a +=
 				'</span>\n</button>\n<div class="dplayer-setting-box">\n<div class="dplayer-setting-origin-panel">\n<div class="dplayer-setting-item dplayer-setting-speed">\n<span class="dplayer-label">',
-				a += s(l("Speed")), a += '</span>\n<div class="dplayer-toggle">', a += c.right, a +=
+				a += s(l("Speed")), a += '</span>\n<div class="dplayer-toggle">', a += c.right, a += r.video.playbackRate, a +=
 				'</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-loop">\n<span class="dplayer-label">',
 				a += s(l("Loop")), a +=
 				'</span>\n<div class="dplayer-toggle">\n<input class="dplayer-toggle-setting-input" type="checkbox" name="dplayer-toggle">\n<label for="dplayer-toggle"></label>\n</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-showdan">\n<span class="dplayer-label">',
@@ -2074,7 +2060,9 @@
 				a += s(l("Unlimited danmaku")), a +=
 				'</span>\n<div class="dplayer-toggle">\n<input class="dplayer-danunlimit-setting-input" type="checkbox" name="dplayer-toggle-danunlimit">\n<label for="dplayer-toggle-danunlimit"></label>\n</div>\n</div>\n<div class="dplayer-setting-item dplayer-setting-danmaku">\n<span class="dplayer-label">',
 				a += s(l("Opacity for danmaku")), a +=
-				'</span>\n<div class="dplayer-danmaku-bar-wrap">\n<div class="dplayer-danmaku-bar">\n<div class="dplayer-danmaku-bar-inner">\n<span class="dplayer-thumb"></span>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div class="dplayer-setting-speed-panel">\n<div class="dplayer-setting-speed-item" data-speed="0.5">\n<span class="dplayer-label">0.5</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="0.75">\n<span class="dplayer-label">0.75</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1">\n<span class="dplayer-label">',
+				'</span>\n<div class="dplayer-danmaku-bar-wrap">\n<div class="dplayer-danmaku-bar">\n<div class="dplayer-danmaku-bar-inner" style="background:',
+				a += s(r.theme), a += '">\n<span class="dplayer-thumb" style="background:',
+				a += s(r.theme), a += '"></span>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div class="dplayer-setting-speed-panel">\n<div class="dplayer-setting-speed-item" data-speed="0.5">\n<span class="dplayer-label">0.5</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="0.75">\n<span class="dplayer-label">0.75</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1">\n<span class="dplayer-label">',
 				a += s(l("Normal")), a +=
 				'</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1.25">\n<span class="dplayer-label">1.25</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="1.5">\n<span class="dplayer-label">1.5</span>\n</div>\n<div class="dplayer-setting-speed-item" data-speed="2">\n<span class="dplayer-label">2</span>\n</div>\n</div>\n</div>\n</div>\n<div class="dplayer-full">\n<button class="dplayer-icon dplayer-full-in-icon" data-balloon="',
 				a += s(l("Web full screen")), a +=
@@ -2110,7 +2098,9 @@
 			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M19.357 2.88c1.749 0 3.366 0.316 4.851 0.946 1.485 0.632 2.768 1.474 3.845 2.533s1.922 2.279 2.532 3.661c0.611 1.383 0.915 2.829 0.915 4.334 0 1.425-0.304 2.847-0.915 4.271-0.611 1.425-1.587 2.767-2.928 4.028-0.855 0.813-1.811 1.607-2.869 2.38s-2.136 1.465-3.233 2.075c-1.099 0.61-2.198 1.098-3.296 1.465-1.098 0.366-2.115 0.549-3.051 0.549-1.343 0-2.441-0.438-3.296-1.311-0.854-0.876-1.281-2.41-1.281-4.608 0-0.366 0.020-0.773 0.060-1.221s0.062-0.895 0.062-1.343c0-0.773-0.183-1.353-0.55-1.738-0.366-0.387-0.793-0.58-1.281-0.58-0.652 0-1.21 0.295-1.678 0.886s-0.926 1.23-1.373 1.921c-0.447 0.693-0.905 1.334-1.372 1.923s-1.028 0.886-1.679 0.886c-0.529 0-1.048-0.427-1.556-1.282s-0.763-2.259-0.763-4.212c0-2.197 0.529-4.241 1.587-6.133s2.462-3.529 4.21-4.912c1.75-1.383 3.762-2.471 6.041-3.264 2.277-0.796 4.617-1.212 7.018-1.253zM7.334 15.817c0.569 0 1.047-0.204 1.434-0.611s0.579-0.875 0.579-1.404c0-0.569-0.193-1.047-0.579-1.434s-0.864-0.579-1.434-0.579c-0.529 0-0.987 0.193-1.373 0.579s-0.58 0.864-0.58 1.434c0 0.53 0.194 0.998 0.58 1.404 0.388 0.407 0.845 0.611 1.373 0.611zM12.216 11.79c0.691 0 1.292-0.254 1.8-0.763s0.762-1.107 0.762-1.8c0-0.732-0.255-1.343-0.762-1.831-0.509-0.489-1.109-0.732-1.8-0.732-0.732 0-1.342 0.244-1.831 0.732-0.488 0.488-0.732 1.098-0.732 1.831 0 0.693 0.244 1.292 0.732 1.8s1.099 0.763 1.831 0.763zM16.366 25.947c0.692 0 1.282-0.214 1.77-0.64s0.732-0.987 0.732-1.678-0.244-1.261-0.732-1.709c-0.489-0.448-1.078-0.671-1.77-0.671-0.65 0-1.21 0.223-1.678 0.671s-0.702 1.018-0.702 1.709c0 0.692 0.234 1.25 0.702 1.678s1.027 0.64 1.678 0.64zM19.113 9.592c0.651 0 1.129-0.203 1.433-0.611 0.305-0.406 0.459-0.874 0.459-1.404 0-0.488-0.154-0.947-0.459-1.373-0.304-0.427-0.782-0.641-1.433-0.641-0.529 0-1.008 0.193-1.434 0.58s-0.64 0.865-0.64 1.434c0 0.571 0.213 1.049 0.64 1.434 0.427 0.389 0.905 0.581 1.434 0.581zM24.848 12.826c0.57 0 1.067-0.213 1.495-0.64 0.427-0.427 0.64-0.947 0.64-1.556 0-0.57-0.214-1.068-0.64-1.495-0.428-0.427-0.927-0.64-1.495-0.64-0.611 0-1.129 0.213-1.555 0.64-0.428 0.427-0.642 0.926-0.642 1.495 0 0.611 0.213 1.129 0.642 1.556s0.947 0.64 1.555 0.64z"></path></svg>'
 	}, function(e, t) {
 		e.exports =
-			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M13.725 30l3.9-5.325-3.9-1.125v6.45zM0 17.5l11.050 3.35 13.6-11.55-10.55 12.425 11.8 3.65 6.1-23.375-32 15.5z"></path></svg>'
+			//弹幕发送
+			//'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M13.725 30l3.9-5.325-3.9-1.125v6.45zM0 17.5l11.050 3.35 13.6-11.55-10.55 12.425 11.8 3.65 6.1-23.375-32 15.5z"></path></svg>'
+			'<svg t="1583931677114" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3036" width="32" height="32"><path d="M973.824 515.9936c32.7168-14.9248 32.8192-39.0656 0-54.016L85.3248 56.576c-32.7168-14.9248-59.264 2.2016-59.3408 37.6832L25.6 386.816l719.616 102.0928L25.6 591.104l0.384 292.608c0 35.7376 26.5216 52.6336 59.3408 37.6832L973.824 515.9936z" p-id="3037" fill="#eeeeee"></path></svg>'
 	}, function(e, t) {
 		e.exports =
 			'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32"><path d="M27.090 0.131h-22.731c-2.354 0-4.262 1.839-4.262 4.109v16.401c0 2.269 1.908 4.109 4.262 4.109h4.262v-2.706h8.469l-8.853 8.135 1.579 1.451 7.487-6.88h9.787c2.353 0 4.262-1.84 4.262-4.109v-16.401c0-2.27-1.909-4.109-4.262-4.109v0zM28.511 19.304c0 1.512-1.272 2.738-2.841 2.738h-8.425l-0.076-0.070-0.076 0.070h-11.311c-1.569 0-2.841-1.226-2.841-2.738v-13.696c0-1.513 1.272-2.739 2.841-2.739h19.889c1.569 0 2.841-0.142 2.841 1.37v15.064z"></path></svg>'
@@ -2273,15 +2263,16 @@
 				"Input danmaku, hit Enter": "输入弹幕，回车发送",
 				"About us": "关于我们",
 				"DPlayer feedback": "播放器意见反馈",
-				"About DPlayer": "关于Hopuc Player播放器",
+				"About Hopuc Player": "关于Hopuc Player",
 				Loop: "循环",
 				Speed: "倍速",
 				"Opacity for danmaku": "弹幕透明度",
 				Normal: "正常",
 				"Please input danmaku content!": "请输入弹幕内容！",
+				"Set danmaku": "弹幕设置",
 				"Set danmaku color": "设置弹幕颜色",
 				"Set danmaku type": "设置弹幕类型",
-				"Show danmaku": "显示弹幕",
+				"Show danmaku": "弹幕",
 				"Video load failed": "视频加载失败",
 				"Danmaku load failed": "弹幕加载失败",
 				"Danmaku send failed": "弹幕发送失败",
@@ -2312,7 +2303,7 @@
 				"Input danmaku, hit Enter": "輸入彈幕，Enter 發送",
 				"About us": "關於我們",
 				"DPlayer feedback": "播放器意見回饋",
-				"About DPlayer": "關於Hopuc Player播放器",
+				"About Hopuc Player": "關於Hopuc Player",
 				Loop: "循環播放",
 				Speed: "速度",
 				"Opacity for danmaku": "彈幕透明度",
@@ -2320,7 +2311,7 @@
 				"Please input danmaku content!": "請輸入彈幕內容！",
 				"Set danmaku color": "設定彈幕顏色",
 				"Set danmaku type": "設定彈幕類型",
-				"Show danmaku": "顯示彈幕",
+				"Show danmaku": "彈幕",
 				"Video load failed": "影片載入失敗",
 				"Danmaku load failed": "彈幕載入失敗",
 				"Danmaku send failed": "彈幕發送失敗",
@@ -2560,8 +2551,7 @@
 		var i = n(9);
 		e.exports = function(e, t, n) {
 			var a = n.config.validateStatus;
-			n.status && a && !a(n.status) ? t(i("Request failed with status code " + n.status, n.config, null, n.request, n)) :
-				e(n)
+			n.status && a && !a(n.status) ? t(i("Request failed with status code " + n.status, n.config, null, n.request, n)) : e(n)
 		}
 	}, function(e, t, n) {
 		"use strict";
@@ -3125,7 +3115,7 @@
 					value: function(e, t, n) {
 						if (e = parseFloat(e), !isNaN(e)) {
 							e = Math.max(e, 0), e = Math.min(e, 1), this.bar.set("volume", e, "height");
-							var i = (100 * e).toFixed(0) + "%";
+							var i = (100 * e).toFixed(0) + "";
 							this.template.volumeBarWrapWrap.dataset.balloon = i, t || this.user.set("volume", e),
 								n || this.notice(
 									this.tran("Volume") + " " + (100 * e).toFixed(0) + "%"),
@@ -3148,7 +3138,7 @@
 				}, {
 					key: "switchVideo",
 					value: function(e, t) {
-						this.pause(), this.video.poster = e.pic ? e.pic : "", this.video.src = e.url, this.initMSE(this.video, e.type ||"auto"), t && (this.template.danmakuLoading.style.display = "block", this.bar.set("played", 0, "width"),this.bar.set("loaded", 0, "width"), this.template.ptime.innerHTML = "00:00", console.log("dddd"),this.template.danmaku.innerHTML ="", this.danmaku && this.danmaku.reload({
+						this.pause(), this.video.poster = e.pic ? e.pic : "", this.video.src = e.url, this.initMSE(this.video, e.type ||"auto"), t && (this.template.danmakuLoading.style.display = "block", this.bar.set("played", 0, "width"),this.bar.set("loaded", 0, "width"), this.template.ptime.innerHTML = "00:00", /* console.log("dddd"), */this.template.danmaku.innerHTML ="", this.danmaku && this.danmaku.reload({
 								id: t.id,
 								address: t.api,
 								token: t.token,
@@ -3300,7 +3290,7 @@
 				}], [{
 					key: "version",
 					get: function() {
-						return "1.0.4"
+						return "1.0.5"
 					}
 				}]), e
 			}();
@@ -3314,39 +3304,36 @@
 			o = (i = a) && i.__esModule ? i : {
 				default: i
 			};
-		console.log("%c Hopuc Player v1.0.4-20200217 %c https://hopuc.com",
+		console.log("%c Hopuc Player v1.0.5-20200308 %c https://hopuc.com",
 			"color: #77c; background: #ddd; padding:5px 0;border-radius:3px", "color: #77c;"), t.default = o.default
 	}]).default
 });
 
 function pip() {
 	var btn = document.getElementById('pip-btn');
-	// var video = document.getElementById('video');
-	//var video = dp.video;
+	var v = dp.video;
 	var svg = document.getElementById('pip-svg');
-	//var pip = document.getElementsByClassName('dplayer-pip');
-	//console.log('切换画中画模式');
-	// 禁用按钮，防止二次点击
+	//禁用按钮，防止二次点击
 	this.disabled = true;
 	try {
-		if (dp.video !== document.pictureInPictureElement) {
+		if (v !== document.pictureInPictureElement) {
 			// 尝试进入画中画模式
-			dp.video.requestPictureInPicture();
+			v.requestPictureInPicture();
 		} else {
 			// 退出画中画
 			document.exitPictureInPicture();
 		}
 		
-		dp.video.addEventListener('enterpictureinpicture', function() {
-		  // 已进入画中画模式
-		  svg.innerHTML =
-		  	'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
+		v.addEventListener('enterpictureinpicture', function() {
+		// 已进入画中画模式
+		svg.innerHTML =
+			'<svg t="1580656429799" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10476" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667z m-362.666666-341.333333L403.498667 385.834667l96 96-60.330667 60.330666-96-96L256 533.333333V298.666667h234.666667z" p-id="10477" fill="#eeeeee"></path></svg>'
 		});
 		
-		dp.video.addEventListener('leavepictureinpicture', function() {
-		  // 已退出画中画模式
-		  svg.innerHTML =
-		  	'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
+		v.addEventListener('leavepictureinpicture', function() {
+		// 已退出画中画模式
+		svg.innerHTML =
+			'<svg t="1580657969909" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10683" width="32" height="32"><path d="M896 128a42.666667 42.666667 0 0 1 42.666667 42.666667v298.666666h-85.333334V213.333333H170.666667v597.333334h256v85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768z m0 426.666667a42.666667 42.666667 0 0 1 42.666667 42.666666v256a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333a42.666667 42.666667 0 0 1-42.666667-42.666667v-256a42.666667 42.666667 0 0 1 42.666667-42.666666h341.333333z m-42.666667 85.333333h-256v170.666667h256v-170.666667zM286.165333 268.501333l96 96L469.333333 277.333333V512H234.666667l87.168-87.168-96-96 60.330666-60.330667z" p-id="10684" fill="#eeeeee"></path></svg>'
 		});
 		
 	} catch (error) {
@@ -3357,20 +3344,39 @@ function pip() {
 	}
 }
 
-
+function repeat(){
+	var svg = document.getElementById('pip-svg');
+	svg.innerHTML =
+		'<svg t="1583771449030" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9811" width="32" height="32" style="width: 80%;"><path d="M128 512c25.6 0 42.666667-17.066667 42.666667-42.666667V384c0-72.533333 55.466667-128 128-128h494.933333l-98.133333 98.133333c-17.066667 17.066667-17.066667 42.666667 0 59.733334 8.533333 8.533333 17.066667 12.8 29.866666 12.8s21.333333-4.266667 29.866667-12.8l170.666667-170.666667c4.266667-4.266667 8.533333-8.533333 8.533333-12.8 4.266667-8.533333 4.266667-21.333333 0-34.133333-4.266667-4.266667-4.266667-8.533333-8.533333-12.8l-170.666667-170.666667c-17.066667-17.066667-42.666667-17.066667-59.733333 0s-17.066667 42.666667 0 59.733333L793.6 170.666667H298.666667C179.2 170.666667 85.333333 264.533333 85.333333 384v85.333333c0 25.6 17.066667 42.666667 42.666667 42.666667zM896 512c-25.6 0-42.666667 17.066667-42.666667 42.666667v85.333333c0 72.533333-55.466667 128-128 128H230.4l98.133333-98.133333c17.066667-17.066667 17.066667-42.666667 0-59.733334s-42.666667-17.066667-59.733333 0l-170.666667 170.666667c-4.266667 4.266667-8.533333 8.533333-8.533333 12.8-4.266667 8.533333-4.266667 21.333333 0 34.133333 4.266667 4.266667 4.266667 8.533333 8.533333 12.8l170.666667 170.666667c8.533333 8.533333 17.066667 12.8 29.866667 12.8s21.333333-4.266667 29.866666-12.8c17.066667-17.066667 17.066667-42.666667 0-59.733333L230.4 853.333333H725.333333c119.466667 0 213.333333-93.866667 213.333334-213.333333v-85.333333c0-25.6-17.066667-42.666667-42.666667-42.666667z" fill="" p-id="9812"></path></svg>'
+	
+}
 document.onkeydown = function(e) {
 	//e.preventDefault();
 	var e = e.which||e.keyCode;
-	if (e == 70) {
-		document.querySelector('.dplayer-full-icon').click();
-	}
-	if (e == 77) {
-		document.querySelector('.dplayer-volume-icon').click();
-	}
-	if (e == 80) {
-		document.querySelector('#pip-btn').click();
-	}
-	//console.log(e.which)
+	switch(e) {
+		case 70:
+			document.querySelector('.dplayer-full-icon').click();
+			break;
+		case 77:
+			document.querySelector('.dplayer-volume-icon').click();
+			break;
+		case 80:
+			document.querySelector('#pip-btn').click();
+			break;
+		default:
+			//console.log(e);
+	} 
 };
+
+function timeNow(){
+	var t = document.querySelector('.dplayer-top-time');
+	var date = new Date();
+	date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+	// return date.toJSON().substr(11, 8);
+	if(t){
+		t.innerText = date.toJSON().substr(11, 8);
+	}
+}
+setInterval(timeNow, 1000);
 
 //# sourceMappingURL=player.min.js.map

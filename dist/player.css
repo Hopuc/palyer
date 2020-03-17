@@ -1,4 +1,4 @@
-/* 2020-02-15 */
+/* 2020-03-12 */
 
 button[data-balloon] {
 	overflow: visible
@@ -19,8 +19,9 @@ button[data-balloon] {
 	border-radius: 3px;
 	color: #555;
 	content: attr(data-balloon);
-	//padding: .5em 1em;
-	white-space: nowrap
+	/* padding: .5em 1em; */
+	white-space: nowrap;
+	box-shadow: 0 0 5px rgba(0,0,0,.3);
 }
 
 [data-balloon]:after,
@@ -919,7 +920,7 @@ button[data-balloon] {
 
 	.dplayer.dplayer-playing .dplayer-controller,
 	.dplayer.dplayer-playing .dplayer-controller-mask {
-		opacity: 0
+		/* opacity: 0 */
 	}
 
 	.dplayer.dplayer-playing:hover .dplayer-controller,
@@ -946,15 +947,19 @@ button[data-balloon] {
 
 .dplayer.dplayer-hide-controller .dplayer-controller,
 .dplayer.dplayer-hide-controller .dplayer-controller-mask {
-	opacity: 0;
+	/* opacity: 0; */
 	-webkit-transform: translateY(100%);
 	transform: translateY(100%)
 }
 
-.dplayer.dplayer-hide-controller .dplayer-video-wrap .dplayer-title {
+.dplayer.dplayer-hide-controller .dplayer-video-wrap .dplayer-top {
 	opacity: 0;
 	-webkit-transform: translateY(-100%);
 	transform: translateY(-100%)
+}
+
+.dplayer.dplayer-hide-controller .dplayer-video-wrap .dplayer-logo {
+	opacity: 1;
 }
 
 .dplayer.dplayer-show-controller .dplayer-controller,
@@ -1180,9 +1185,8 @@ button[data-balloon] {
 }
 
 .dplayer-controller-mask {
-	//background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==) repeat-x bottom;
-	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .1), rgba(0, 0, 0, .2), rgba(0, 0, 0, .4), rgba(0, 0, 0, .6));
-	height: 82px;
+	background: linear-gradient(rgba(0, 0, 0, 0),  rgba(0, 0, 0, .8));
+	height: 90px;
 	width: 100%
 }
 
@@ -1197,7 +1201,7 @@ button[data-balloon] {
 	left: 0;
 	right: 0;
 	height: 41px;
-	padding: 0 20px;
+	/* padding: 0 20px; */
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -1216,9 +1220,10 @@ button[data-balloon] {
 	padding: 5px 0;
 	cursor: pointer;
 	position: absolute;
-	bottom: 34px;
-	width: calc(100% - 40px);
-	height: 4px
+	bottom: 35px;
+	width: 100%;
+	/* width: calc(100% - 40px); */
+	height: 3px
 }
 
 .dplayer-controller .dplayer-bar-wrap:hover .dplayer-bar .dplayer-played .dplayer-thumb {
@@ -1266,7 +1271,7 @@ button[data-balloon] {
 	padding: 5px 8px;
 	background-color: rgba(0, 0, 0, .62);
 	color: #fff;
-	border-radius: 4px;
+	/* border-radius: 4px; */
 	font-size: 12px;
 	white-space: nowrap;
 	-webkit-transform: translateX(-50%);
@@ -1293,7 +1298,7 @@ button[data-balloon] {
 	position: absolute;
 	left: 0;
 	top: -24px;
-	border-radius: 4px;
+	/* border-radius: 4px; */
 	padding: 5px 7px;
 	background-color: rgba(0, 0, 0, .62);
 	color: #fff;
@@ -1313,17 +1318,16 @@ button[data-balloon] {
 
 .dplayer-controller .dplayer-bar-wrap .dplayer-bar {
 	position: relative;
-	height: 2px;
+	height: 3px;
 	width: 100%;
-	//background: hsla(0, 0%, 100%, .2);
-	background: rgba(255, 255, 255, .5);
+	background: rgba(240,240,240,.5);
 	cursor: pointer;
-	border-radius: 1px;
+	/* border-radius: 1px; */
+	box-shadow: 0 0 5px rgba(0,0,0,.3);
 }
 
 .dplayer-controller .dplayer-bar-wrap .dplayer-bar .dplayer-loaded {
-	//background: hsla(0, 0%, 100%, .4);
-	background: rgba(255, 255, 255, .7);
+	background: rgba(240,240,240,.9);
 	transition: all .5s ease
 }
 
@@ -1331,26 +1335,32 @@ button[data-balloon] {
 .dplayer-controller .dplayer-bar-wrap .dplayer-bar .dplayer-played {
 	position: absolute;
 	left: 0;
-	top: -1px;
+	/* top: -1px; */
 	bottom: 0;
-	height: 4px;
+	height: 3px;
 	will-change: width;
-	border-radius: 2px;
+	/* border-radius: 2px; */
 }
 
 .dplayer-controller .dplayer-bar-wrap .dplayer-bar .dplayer-played .dplayer-thumb {
 	position: absolute;
-	top: 0;
-	right: 5px;
-	margin-top: -4px;
-	margin-right: -10px;
+	top: -4.5px;
+	right: -6px;
+	/* margin-top: -4px;
+	margin-right: -10px; */
 	height: 12px;
 	width: 12px;
 	border-radius: 50%;
 	cursor: pointer;
 	transition: all .3s ease-in-out;
+	/* -webkit-transform: scale(0);
+	transform: scale(0); */
+	box-shadow: 0 0 5px rgba(0,0,0,.3);
+}
+
+.dplayer-hide-controller .dplayer-controller .dplayer-bar-wrap .dplayer-bar .dplayer-played .dplayer-thumb{
 	-webkit-transform: scale(0);
-	transform: scale(0)
+	transform: scale(0);
 }
 
 .dplayer-controller .dplayer-bar-wrap .dplayer-bar .dplayer-played .dplayer-thumb:hover {
@@ -1492,12 +1502,18 @@ button[data-balloon] {
 	line-height: 18px;
 	text-align: center;
 	border-radius: 4px;
-	background: none;
+	color: #fff;
+	background: rgba(0,0,0,.4);
+	/* background: none; */
 	margin: 0;
+	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
-	width: 100%;
-	color: #fff
+	
+}
+
+.dplayer-controller .dplayer-icons.dplayer-comment-box .dplayer-comment-input:hover::-webkit-input-placeholder {
+	color: rgba(255,255,255,.7)
 }
 
 .dplayer-controller .dplayer-icons.dplayer-comment-box .dplayer-comment-input::-webkit-input-placeholder {
@@ -1524,8 +1540,12 @@ button[data-balloon] {
 	padding: 7px
 }
 
+.dplayer-controller .dplayer-icons.dplayer-icons-left {
+	left: 10px
+}
+
 .dplayer-controller .dplayer-icons.dplayer-icons-right {
-	right: 20px
+	right: 10px
 }
 
 .dplayer-controller .dplayer-icons.dplayer-icons-right .dplayer-icon {
@@ -1613,17 +1633,17 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume:hover .dplayer-volume-bar-wrap .dplayer-volume-bar {
-	//width: 45px;
 	height: 45px;
+	box-shadow: 0 0 5px rgba(0,0,0,.3);
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume:hover .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner .dplayer-thumb {
 	-webkit-transform: scale(1);
-	transform: scale(1)
+	transform: scale(1);
+	box-shadow: 0 0 5px rgba(0,0,0,.2);
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume.dplayer-volume-active .dplayer-volume-bar-wrap .dplayer-volume-bar {
-	//width: 45px;
 	height: 45px;
 }
 
@@ -1637,10 +1657,7 @@ button[data-balloon] {
 	margin: 0;
 	padding: 2px 18px;
 	vertical-align: middle;
-	//height: 100%;
-	//width: 100%;
 	position: absolute;
-	//top: -60px;
 	bottom: 50px;
 	left: 0;
 }
@@ -1648,12 +1665,10 @@ button[data-balloon] {
 .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar {
 	position: relative;
 	top: 0px;
-	//width: 0;
-	//height: 3px;
 	width: 4px;
 	height: 0;
 	border-radius: 2px;
-	background: #aaa;
+	background: rgba(240,240,240,.5);
 	transition: all .5s ease-in-out
 }
 
@@ -1661,24 +1676,19 @@ button[data-balloon] {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	//height: 100%;
 	width: 100%;
 	transition: all .1s ease;
 	border-radius: 2px;
-	//will-change: width;
 	will-change: height;
 }
 
 .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar .dplayer-volume-bar-inner .dplayer-thumb {
 	position: absolute;
-	top: 0;
-	//right: 5px;
-	right: -3px;
-	margin-top: -4px;
-	//margin-right: 0;
-	height: 10px;
-	width: 10px;
-	border-radius: 50%;
+	top: -4px;
+	left: -4px;
+	height: 12px;
+	width: 12px;
+	border-radius: 6px;
 	cursor: pointer;
 	transition: all .3s ease-in-out;
 	-webkit-transform: scale(0);
@@ -1701,7 +1711,7 @@ button[data-balloon] {
 
 .dplayer-controller .dplayer-icons .dplayer-setting .dplayer-setting-box {
 	position: absolute;
-	//right: 8px;
+	/* right: 8px; */
 	bottom: 50px;
 	-webkit-transform: scale(0);
 	transform: scale(0);
@@ -1709,7 +1719,7 @@ button[data-balloon] {
 	border-radius: 2px;
 	background: rgba(250,250,250,.9);
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
-	//padding: 7px 0;
+	/* padding: 7px 0; */
 	transition: all .3s ease-in-out;
 	overflow: hidden;
 	z-index: 2
@@ -1754,9 +1764,13 @@ button[data-balloon] {
 	position: relative
 }
 
+.dplayer-controller .dplayer-icons .dplayer-setting .dplayer-setting-item.dplayer-setting-danunlimit{
+	display: none;
+}
+
 .dplayer-controller .dplayer-icons .dplayer-setting .dplayer-setting-item:hover,
 .dplayer-controller .dplayer-icons .dplayer-setting .dplayer-setting-speed-item:hover {
-	background-color: hsla(0, 0%, 100%, .1)
+	background: rgba(0, 0, 0, .1);
 }
 
 .dplayer-controller .dplayer-icons .dplayer-setting .dplayer-setting-danmaku {
@@ -1798,7 +1812,7 @@ button[data-balloon] {
 	top: 8.5px;
 	width: 100%;
 	height: 3px;
-	background: #fff;
+	background: rgba(0,0,0,.2);
 	transition: all .3s ease-in-out
 }
 
@@ -1808,7 +1822,7 @@ button[data-balloon] {
 	left: 0;
 	height: 100%;
 	transition: all .1s ease;
-	background: #aaa;
+	background: rgba(0,0,0,.4);
 	will-change: width
 }
 
@@ -1833,14 +1847,14 @@ button[data-balloon] {
 }
 
 .dplayer-controller .dplayer-icons .dplayer-full:hover .dplayer-full-in-icon {
-	//display: block
+	/* display: block */
 }
 
 .dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon {
-	//position: absolute;
+	/* position: absolute; */
 	top: -30px;
 	z-index: 1;
-	//display: none;
+	/* display: none; */
 	position: static;
 	display: inline-block;
 }
@@ -1934,8 +1948,8 @@ button[data-balloon] {
 .dplayer-controller .dplayer-icons .dplayer-toggle input+label {
 	display: inline-block;
 	position: relative;
-	box-shadow: inset 0 0 0 0 #555;
-	border: 1px solid #555;
+	/* box-shadow: inset 0 0 0 1px #555; */
+	border: 1px solid #888;
 	height: 18px;
 	width: 30px;
 	border-radius: 10px;
@@ -1959,7 +1973,7 @@ button[data-balloon] {
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input+label:after {
 	background: #fff;
-	box-shadow: 0 0 3px rgba(0, 0, 0, .2)
+	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
 }
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label {
@@ -1968,8 +1982,8 @@ button[data-balloon] {
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label:before {
 	width: 28px;
-	background: rgba(50,50,50,.8);
-	box-shadow: 0 0 0 1px rgba(0, 0, 0, .8);	
+	background: rgba(119,119,204,.8);
+	box-shadow: 0 0 0 1px rgba(119,119,204, .8);	
 }
 
 .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label:after {
@@ -2069,14 +2083,67 @@ button[data-balloon] {
 	}
 }
 
+.dplayer-top {
+	display: flex;
+	justify-content: space-between;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 60px;
+	position: absolute;
+	pointer-events: none;
+	transition: ease-in-out .3s; 
+	background: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, 0));
+}
+
+.dplayer-top span{
+	color: rgba(255,255,255,.9);
+	/* font-weight: 400 !important; */
+	font-size: 17px;
+	line-height: 50px;
+	height: 50px;
+	float: right;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dplayer-top-title{
+	display: inline-block;
+	width: calc(100% - 120px);
+	margin-left: 16px;
+}
+
+.dplayer-top-time{
+	text-align: right;
+	width: 78px;
+	margin-right: 16px;
+}
+
+.dplayer-top-logo {
+	display: none;
+	float: right;
+	max-height: 50px;
+	pointer-events: none;
+}
+
+.dplayer-top-logo img {
+	vertical-align: middle;
+	width: 3vmax;
+	min-width: 26px;
+	min-height: 26px;
+	max-width: 70%;
+	max-height: 70%;
+}
+
 .dplayer-logo {
 	pointer-events: none;
 	position: absolute;
-	//left: 20px;
 	right: 28px;
-	top: 16px;
+	top: 14px;
 	max-width: 30px;
-	max-height: 30px
+	max-height: 30px;
+	opacity: 0;
 }
 
 .dplayer-logo img {
@@ -2086,25 +2153,6 @@ button[data-balloon] {
 	max-width: 100%;
 	max-height: 100%;
 	background: none
-}
-
-.dplayer-title {
-	pointer-events: none;
-	position: absolute;
-	left: 20px;
-	top: 16px;
-	max-width: 80%;
-	width: 70%;
-	//height: 30px;
-	transition: ease-in-out .3s; 
-}
-
-.dplayer-title span{
-	color: rgba(255,255,255,.8);
-	font-size: 18px;
-	height: 24px; 
-	line-height: 24px;
-	font-weight: 400 !important;
 }
 
 .dplayer-menu {
@@ -2129,7 +2177,7 @@ button[data-balloon] {
 }
 
 .dplayer-menu .dplayer-menu-item:hover {
-	background-color: rgba(255,255,255,.2)
+	background: rgba(0, 0, 0, .1);
 }
 
 .dplayer-menu .dplayer-menu-item a {
@@ -2268,6 +2316,6 @@ button[data-balloon] {
 
 #dplayer span,#dplayer p {
 	font-weight: 700;
-	font-family: "Microsoft YaHei", "微软雅黑", "Arial", "SimHei", "黑体", sans-serif;
+	font-family: "Microsoft YaHei", "Arial", "SimHei", sans-serif;
 }
 
